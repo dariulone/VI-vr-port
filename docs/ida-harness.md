@@ -12,4 +12,4 @@ The harness is static-only. It enumerates imports, selected strings, cross-refer
 
 The target inventory uses image-relative RVAs and includes xrefs for each entry. Generated reports therefore provide a ready-made review list for the first live trace while keeping the executable and generated report private.
 
-The harness was verified against the current IDA database. It reported 434,489 functions, 68 import modules, 40 render candidates, 36 static VR and physics targets, and 80 selected technical strings. The generated JSON and Markdown files remain in the private analysis workspace.
+The harness was verified against the current IDA database. It reported 434,489 functions, 68 import modules, 40 render candidates, 39 static VR and physics targets, and 80 selected technical strings. The generated JSON and Markdown files remain in the private analysis workspace.
