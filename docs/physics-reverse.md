@@ -56,6 +56,41 @@ The parser calls `sub_1453808B0` and dispatches a body update through a vtable m
 
 `0x141F97990` is a dynamic update candidate. When the body type at the resolved body object equals `4`, it sets a body-state flag, calls `0x1453808B0` on the body state, passes a 56-byte temporary record through `0x14517E960`, and returns through `0x144EE47B0`. These are high-priority runtime breakpoints for identifying the solver update and body integration cadence.
 
+### Body-shape batch and state preparation
+
+The caller at `0x140645740` gives a more detailed static view of the body update boundary.
+
+- The input batch stores a count at `a1 + 0x0C` and an entry array at `a1 + 0x10`.
+- Each entry exposes a range through 16-bit fields at `+0x20` and `+0x22`. Shape records are walked with an 80-byte stride and use a shape or material index at record offset `+0x44`.
+- The routine writes the owner context into the body at `+0x48`, sets entry state at `+0x54`, sets body flags at `+0x18`, `+0x19`, and `+0x154`, and filters shapes through virtual methods at byte offsets `+0x50` and `+0x58`.
+- For active shapes it expands source vectors into 64-byte records, generates normalized four-component orientation or parameter vectors, and writes per-shape scalar metadata. The normalization uses reciprocal-square-root instructions, which is consistent with quaternion or normalized basis preparation.
+- `0x140F22840` reduces a count of source elements, computes a reciprocal of the aggregate scalar, and scales the corresponding scalar and vector arrays. `0x144F5B760` is the small vector-scale helper used by this stage.
+- `0x144F5B820` accumulates weighted vector values and normalizes the resulting vector. `0x144F5B8C0` accumulates weighted second-moment terms from offsets around an aggregate center. This is an inertia or shape-mass preparation candidate, not proof of the contact solver itself.
+- The prepared arrays pass through `0x144F5B770` and then into `0x141F97990`. This creates a concrete static chain from shape records to body-state update.
+
+The compact helper chain is therefore:
+
+    shape batch 0x140645740
+        -> aggregate and second-moment preparation 0x144F5B770
+        -> body-state update 0x141F97990
+        -> normalized state 0x14517E960 / 0x14517E9F0
+
+The body-state helpers expose additional fields. `0x1453808B0` writes mass at `+0x4C` and recomputes inverse mass at `+0x5C`. `0x14517E960` clamps and merges an input vector into `+0x40`, normalizes the derived vector at `+0x50`, stores a 16-bit state or index at `+0x60`, and updates state flags through `0x14517E9D0`. `0x144EE47B0` merges another vector into the same `+0x50` record. This identifies state normalization and flag propagation around the update, while the integration, broadphase, and contact impulse stages remain unlocated.
+
+### Center of mass and inertia preparation
+
+`0x142687A20` is a second body-property path with a more explicit shape aggregate. It reads a body-owned shape array through `a1 + 0x170`, takes the element count from the body record at `+0x164`, and builds one 64-byte transformed record per element. The input vectors are converted into a basis-like block, optional per-shape coefficients at `+0x50`, `+0x54`, and `+0x58` are applied, and the largest active coefficient is tracked.
+
+The aggregate sequence is:
+
+1. `0x14521B7F0` obtains the source shape data through the object's virtual method at byte offset `+0x570` and produces source vectors plus scalar weights.
+2. `0x1450B75E0` expands the shape records into transformed per-element blocks.
+3. `0x1455B1160` accumulates `weight * vector` and divides by the total weight. Its output is written into the body vector at `+0x50`, making it a weighted-center or center-of-mass candidate.
+4. `0x1455B1200` subtracts that center from each transformed vector and accumulates weighted quadratic terms. This is the strongest static inertia or second-moment candidate in the image.
+5. `0x1453808B0` recomputes inverse mass, the body vtable method at byte offset `+0x70` receives the resulting inertia vector, and `0x14517E960` normalizes the state and stores the selected shape index at `+0x60`.
+
+The same helper pair is used by `0x1406D9FF0`, which initializes a body from its shape count, calls both aggregate routines, updates the body inertia, and sums buoyancy-like coefficients from shape records at `+0x6C`. This is a static initialization and property-update path. It still does not expose the broadphase, contact manifold, impulse solve, or time integration.
+
 ## Vehicle physics and deformation
 
 ### Vehicle request system

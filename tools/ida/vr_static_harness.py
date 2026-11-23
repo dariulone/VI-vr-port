@@ -67,6 +67,15 @@ STATIC_TARGETS = [
     ("rigid_body_params", 0x4454BE0),
     ("rigid_body_config", 0x4455000),
     ("rigid_body_dynamic_update", 0x1F97990),
+    ("body_shape_batch_update", 0x645740),
+    ("body_weighted_aggregate", 0x4F5B770),
+    ("body_second_moment_accumulator", 0x4F5B8C0),
+    ("body_transform_normalizer", 0x517E960),
+    ("body_inverse_mass_recompute", 0x53808B0),
+    ("body_shape_property_update", 0x2687A20),
+    ("body_weighted_center", 0x55B1160),
+    ("body_inertia_accumulator", 0x55B1200),
+    ("body_property_initializer", 0x6D9FF0),
     ("vehicle_handling_data", 0x56D8090),
 ]
 

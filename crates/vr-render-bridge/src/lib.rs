@@ -63,6 +63,15 @@ pub struct RvaManifest {
     pub rigid_body_params: usize,
     pub rigid_body_config: usize,
     pub rigid_body_dynamic_update: usize,
+    pub body_shape_batch_update: usize,
+    pub body_weighted_aggregate: usize,
+    pub body_second_moment_accumulator: usize,
+    pub body_transform_normalizer: usize,
+    pub body_inverse_mass_recompute: usize,
+    pub body_shape_property_update: usize,
+    pub body_weighted_center: usize,
+    pub body_inertia_accumulator: usize,
+    pub body_property_initializer: usize,
     pub vehicle_handling_data: usize,
 }
 
@@ -127,6 +136,15 @@ pub const CURRENT_MANIFEST: RvaManifest = RvaManifest {
     rigid_body_params: 0x4454BE0,
     rigid_body_config: 0x4455000,
     rigid_body_dynamic_update: 0x1F97990,
+    body_shape_batch_update: 0x645740,
+    body_weighted_aggregate: 0x4F5B770,
+    body_second_moment_accumulator: 0x4F5B8C0,
+    body_transform_normalizer: 0x517E960,
+    body_inverse_mass_recompute: 0x53808B0,
+    body_shape_property_update: 0x2687A20,
+    body_weighted_center: 0x55B1160,
+    body_inertia_accumulator: 0x55B1200,
+    body_property_initializer: 0x6D9FF0,
     vehicle_handling_data: 0x56D8090,
 };
 
@@ -252,6 +270,15 @@ mod tests {
         assert_ne!(CURRENT_MANIFEST.physics_material_params, 0);
         assert_ne!(CURRENT_MANIFEST.rigid_body_params, 0);
         assert_ne!(CURRENT_MANIFEST.rigid_body_dynamic_update, 0);
+        assert_ne!(CURRENT_MANIFEST.body_shape_batch_update, 0);
+        assert_ne!(CURRENT_MANIFEST.body_weighted_aggregate, 0);
+        assert_ne!(CURRENT_MANIFEST.body_second_moment_accumulator, 0);
+        assert_ne!(CURRENT_MANIFEST.body_transform_normalizer, 0);
+        assert_ne!(CURRENT_MANIFEST.body_inverse_mass_recompute, 0);
+        assert_ne!(CURRENT_MANIFEST.body_shape_property_update, 0);
+        assert_ne!(CURRENT_MANIFEST.body_weighted_center, 0);
+        assert_ne!(CURRENT_MANIFEST.body_inertia_accumulator, 0);
+        assert_ne!(CURRENT_MANIFEST.body_property_initializer, 0);
         assert_eq!(LIVE_HOOK_ORDER.len(), 16);
         assert_eq!(LIVE_HOOK_ORDER[0].rva(CURRENT_MANIFEST), CURRENT_MANIFEST.device_init);
         assert_eq!(LIVE_HOOK_ORDER[15].rva(CURRENT_MANIFEST), CURRENT_MANIFEST.bone_hash_map);

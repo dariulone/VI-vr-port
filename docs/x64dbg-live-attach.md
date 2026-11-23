@@ -29,6 +29,16 @@ This is a read-only attach order for the first translated process. It assumes th
 | 21 | `0x26205C0` | Water system state | mode code, height/depth resources, pass handles |
 | 22 | `0x26870F0` | Constraint name resolver | `constraint_XX` name and resolved index |
 | 23 | `0x1D8C9B0` | Horse collision response | response record and resource vtable |
+| 24 | `0x645740` | Body-shape batch update | batch count `a1+0x0C`, entry range `+0x20/+0x22`, shape records with 80-byte stride |
+| 25 | `0x4F5B770` | Body aggregate preparation | weighted vector inputs, aggregate output, second-moment helper calls |
+| 26 | `0x4F5B8C0` | Body second-moment accumulation | center-relative vectors, per-element weights, accumulated 16-byte state |
+| 27 | `0x1F97990` | Rigid-body dynamic update | body type byte `+0x155`, state flag `a1+0x54`, 56-byte temporary |
+| 28 | `0x517E960` | Body state normalization | input vector, body `+0x40/+0x50`, state index `+0x60` |
+| 29 | `0x53808B0` | Inverse-mass recompute | mass `+0x4C`, inverse mass `+0x5C` |
+| 30 | `0x2687A20` | Shape-property update | body shape count `+0x164`, shape pointer `+0x170`, transformed 64-byte blocks |
+| 31 | `0x55B1160` | Weighted center accumulation | per-shape weights, total weight, normalized center vector |
+| 32 | `0x55B1200` | Inertia or second-moment accumulation | center-relative shape vectors and weighted quadratic terms |
+| 33 | `0x6D9FF0` | Body property initializer | shape count, center/inertia aggregates, mass and buoyancy accumulation |
 
 ## First capture sequence
 
@@ -37,7 +47,7 @@ This is a read-only attach order for the first translated process. It assumes th
 3. Capture one pose update through order `13` to `15` without changing pose bytes.
 4. Compare the camera packet, frustum range list, culling count, plane resource, completion token, and pose metadata by frame id.
 5. Add OpenXR eye packets only after the mono sequence is stable.
-6. For physics, capture registration first and then follow one event into its update or damage consumer. Registration alone does not prove a solver call.
+6. For physics, capture registration first and then follow one event into its update or damage consumer. Registration alone does not prove a solver call. For a rigid body, correlate orders `24` through `29` with the same body pointer and frame or tick marker.
 
 ## Read-only guardrails
 

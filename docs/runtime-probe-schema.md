@@ -57,7 +57,23 @@ The safe Rust representation is `gta6-vr-core::RuntimeProbeFrame`. Its validator
     "particle_collision_job": "0x0",
     "rain_resource": "0x0",
     "water_mode": 0,
-    "constraint_index": -1
+    "constraint_index": -1,
+    "body": {
+      "shape_batch_rva": "0x645740",
+      "aggregate_rva": "0x4f5b770",
+      "shape_property_rva": "0x2687a20",
+      "weighted_center_rva": "0x55b1160",
+      "inertia_rva": "0x55b1200",
+      "property_initializer_rva": "0x6d9ff0",
+      "dynamic_update_rva": "0x1f97990",
+      "body_ptr": "0x0",
+      "body_type": 0,
+      "state_flags": 0,
+      "shape_count": 0,
+      "mass": 0.0,
+      "inverse_mass": 0.0,
+      "state_index": -1
+    }
   }
 }
 ```
@@ -72,6 +88,8 @@ The safe Rust representation is `gta6-vr-core::RuntimeProbeFrame`. Its validator
 - `pose.record_stride` is `0x80`, `pose.metadata_flag_offset` is `0x63`, and `pose.aux_blocks` is `4`.
 - `culling.submit_slot` is `0xF0`, which is distinct from presentation plane slot `0x100` and resource batch slot `0x118`.
 - Physics handles are optional until the corresponding subsystem is active. A zero handle or `constraint_index = -1` means that no event was observed in that frame.
+- `physics.body` contains only scalar state and pointers captured at the static body boundaries. `mass` maps to body offset `+0x4C`, `inverse_mass` to `+0x5C`, and `state_index` to `+0x60`.
+- A body record is correlated by `body_ptr` across the shape batch, aggregate preparation, dynamic update, and normalization hooks. Do not infer solver completion from entering the registration functions alone.
 
 ## Mono and stereo comparison
 
