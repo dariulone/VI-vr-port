@@ -167,6 +167,8 @@ The render-owned packet has a downstream transform consumer at `0x14031B0B0`.
 
 This is a concrete visibility or bounds handoff. It is useful for verifying that the camera packet reached culling. It does not establish the projection matrix upload, so the stereo hook should preserve this path and continue tracing after it.
 
+The nearby `0x1404128B0 → 0x144440C60` path is a second visibility candidate. It normalizes the three packet vectors, derives scalar limits, and constructs several vector pairs that are later consumed by resource records. Its inputs and outputs should be logged before changing any per-eye culling policy.
+
 ## Native stereo insertion
 
 The native stereo path should be inserted at the boundary where the camera packet becomes render constants.

@@ -69,6 +69,17 @@ The render-owned handoff provides an additional static trace target. The active 
 
 The first downstream bounds consumer is `0x14031B0B0`. It reads render-object `+0x4D0` and `+0x4F0`, combines them with a caller transform basis, and produces min/max vectors for a visibility object. Trace its packed handle and the `0x14031BC70` result while changing only the HMD orientation. A changed AABB or handle confirms that camera packet data has reached culling.
 
+### Frustum and visibility-shape candidate
+
+Two adjacent functions provide a stronger static culling candidate.
+
+| Function | RVA | Static evidence |
+|---|---:|---|
+| Frustum preparation | `0x1404128B0` | Resets the render object, reads `+0x4D0`, `+0x4E0`, `+0x4F0`, and scalar parameters at `+0x500`, `+0x504`, and `+0x508`, then builds multiple vector pairs for downstream resource records |
+| Shape math | `0x144440C60` | Reads packet vectors at `+0x30`, `+0x40`, `+0x50` and scalar limits at `+0xF4` and `+0xF8`, normalizes them, writes derived scalars at `+0x100` and `+0x104`, and stores derived vector fields from `+0x70` through `+0xE0` |
+
+The SIMD operations include cross-product-like shuffles, normalization, min/max plane construction, and reciprocal-length correction. This is the best static frustum or visibility-shape candidate found so far. It is still distinct from a proven GPU projection constant upload. The first runtime trace should capture its input packet and the generated plane vectors before the instance-culling dispatch.
+
 ## Culling
 
 The image contains explicit `InstanceCulling`, `meshlet_culling`, and portal stencil culling paths.
