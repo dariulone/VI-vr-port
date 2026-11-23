@@ -7,6 +7,13 @@ name = "gta6-vr-core"
 version = "0.1.0"
 
 [[package]]
+name = "gta6-vr-openxr"
+version = "0.1.0"
+dependencies = [
+ "gta6-vr-core",
+]
+
+[[package]]
 name = "gta6-vr-pose"
 version = "0.1.0"
 dependencies = [

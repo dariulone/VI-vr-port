@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "crates/vr-core",
+    "crates/vr-openxr",
     "crates/vr-pose",
     "crates/vr-render-bridge",
 ]

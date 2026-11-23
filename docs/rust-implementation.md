@@ -25,6 +25,8 @@ Owns frame identifiers, eye packets, world-scale calibration, configuration, dia
 
 Owns the OpenXR instance, session, spaces, swapchain images, action sets, view location, and frame timing. It publishes a complete two-eye packet through a lock-free or sequence-checked handoff.
 
+The checked-in `gta6-vr-openxr` crate currently provides the safe frame coordinator and stereo-view handoff. The platform-specific OpenXR bindings can be connected at this boundary after the runtime presents a usable host process.
+
 ### vr-render-bridge
 
 Owns the unsafe FFI and hook adapters for the translated renderer. It contains:
