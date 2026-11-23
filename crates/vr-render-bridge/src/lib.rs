@@ -205,7 +205,7 @@ mod tests {
         assert_ne!(CURRENT_MANIFEST.projectile_location, 0);
         assert_eq!(LIVE_HOOK_ORDER.len(), 16);
         assert_eq!(LIVE_HOOK_ORDER[0].rva(CURRENT_MANIFEST), CURRENT_MANIFEST.device_init);
-        assert_eq!(LIVE_HOOK_ORDER[13].rva(CURRENT_MANIFEST), CURRENT_MANIFEST.bone_hash_map);
+        assert_eq!(LIVE_HOOK_ORDER[15].rva(CURRENT_MANIFEST), CURRENT_MANIFEST.bone_hash_map);
         assert_eq!(present_path(), PresentPath::XboxPlaneSubmission);
     }
 }
