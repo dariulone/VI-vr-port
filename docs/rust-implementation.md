@@ -150,6 +150,8 @@ The checked-in `gta6-vr-render-bridge` manifest mirrors these targets and also i
 
 The camera render-object handoff is included as `camera_owner_tick`, `camera_render_prepare`, `camera_packet_copy`, `camera_render_object_init`, and `camera_render_object_accessor`. These targets let the first live trace start at the camera owner and stop at the render-owned packet before the generic resource submission helpers.
 
+The bridge exposes the two worker queue slots as constants. `QUEUE_BATCH_SUBMIT_SLOT` is `0x118` for command or resource batches, and `QUEUE_PLANE_SUBMIT_SLOT` is `0x100` for presentation descriptors.
+
 ## Asymmetric projection
 
 OpenXR supplies per-eye tangents. Keep the pure math in vr-core.

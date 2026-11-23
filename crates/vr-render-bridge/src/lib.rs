@@ -67,6 +67,9 @@ pub const CURRENT_MANIFEST: RvaManifest = RvaManifest {
     projectile_location: 0x5B20870,
 };
 
+pub const QUEUE_PLANE_SUBMIT_SLOT: usize = 0x100;
+pub const QUEUE_BATCH_SUBMIT_SLOT: usize = 0x118;
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum PresentPath {
     Unknown,
@@ -88,6 +91,8 @@ mod tests {
         assert_ne!(CURRENT_MANIFEST.camera_output_finalizer, 0);
         assert_ne!(CURRENT_MANIFEST.camera_packet_copy, 0);
         assert_ne!(CURRENT_MANIFEST.instance_culling_dispatch, 0);
+        assert_eq!(QUEUE_PLANE_SUBMIT_SLOT, 0x100);
+        assert_eq!(QUEUE_BATCH_SUBMIT_SLOT, 0x118);
         assert_ne!(CURRENT_MANIFEST.pose_finalize, 0);
         assert_ne!(CURRENT_MANIFEST.projectile_location, 0);
         assert_eq!(present_path(), PresentPath::XboxPlaneSubmission);
