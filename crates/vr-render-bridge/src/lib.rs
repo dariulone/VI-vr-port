@@ -46,11 +46,17 @@ pub struct RvaManifest {
     pub projectile_location: usize,
     pub vehicle_request_system: usize,
     pub vehicle_deform_init: usize,
+    pub vehicle_deform_layout_a: usize,
+    pub vehicle_deform_layout_b: usize,
     pub explosion_damage_init: usize,
     pub gpu_particle_collision_init: usize,
     pub rain_collision_init: usize,
+    pub rain_collision_resource: usize,
+    pub rain_persistent_resource: usize,
     pub water_simulation_init: usize,
     pub water_system_state: usize,
+    pub water_state_builder: usize,
+    pub water_system_helper: usize,
     pub constraint_name_resolver: usize,
     pub horse_collision_response: usize,
 }
@@ -99,11 +105,17 @@ pub const CURRENT_MANIFEST: RvaManifest = RvaManifest {
     projectile_location: 0x5B20870,
     vehicle_request_system: 0x5814350,
     vehicle_deform_init: 0xCBF1F0,
+    vehicle_deform_layout_a: 0x5B02F40,
+    vehicle_deform_layout_b: 0x5432060,
     explosion_damage_init: 0x2511AB0,
     gpu_particle_collision_init: 0x1AF3BA0,
     rain_collision_init: 0x1D87EF0,
+    rain_collision_resource: 0x5D44230,
+    rain_persistent_resource: 0x5C0C5F0,
     water_simulation_init: 0x1E490F0,
     water_system_state: 0x26205C0,
+    water_state_builder: 0x5B83070,
+    water_system_helper: 0x2620140,
     constraint_name_resolver: 0x26870F0,
     horse_collision_response: 0x1D8C9B0,
 };
@@ -222,8 +234,10 @@ mod tests {
         assert_ne!(CURRENT_MANIFEST.pose_aux_array_build, 0);
         assert_ne!(CURRENT_MANIFEST.projectile_location, 0);
         assert_ne!(CURRENT_MANIFEST.vehicle_deform_init, 0);
+        assert_ne!(CURRENT_MANIFEST.vehicle_deform_layout_a, 0);
         assert_ne!(CURRENT_MANIFEST.explosion_damage_init, 0);
         assert_ne!(CURRENT_MANIFEST.gpu_particle_collision_init, 0);
+        assert_ne!(CURRENT_MANIFEST.rain_collision_resource, 0);
         assert_ne!(CURRENT_MANIFEST.water_system_state, 0);
         assert_eq!(LIVE_HOOK_ORDER.len(), 16);
         assert_eq!(LIVE_HOOK_ORDER[0].rva(CURRENT_MANIFEST), CURRENT_MANIFEST.device_init);

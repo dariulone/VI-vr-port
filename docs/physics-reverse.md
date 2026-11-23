@@ -27,6 +27,8 @@ This path is a streaming or entity-request layer. It proves vehicle-specific run
 
 The initializer derives the allocation stride from a runtime format value, allocates both resources with the same resource flags, obtains handles through `sub_1406EB740`, and clears a 32-entry table of 16-byte records. This is consistent with a buffered deform or damage staging system. The static function is initialization only. It does not receive a collision contact or write a vehicle pose.
 
+The two follow-up setup calls are `sub_145B02F40` and `sub_145432060`. They initialize the per-deform resource layout with identity-like defaults before the global 32-slot table is reset. The table is a staging/index layer, not a wheel-contact representation.
+
 The static evidence supports this path.
 
     vehicle collision or damage event
@@ -89,6 +91,8 @@ The job descriptors are indexed through a table initialized by `sub_1415DE1D0`. 
 
 The named rain resource is created with a 3936-byte object, then passed through weather helpers before a larger 29632-byte persistent resource is attached to the weather owner. This indicates a small collision descriptor plus a longer-lived simulation or render state object.
 
+The constructor responsible for the named descriptor is `0x145D44230`. It creates the resource with type code `41`, stores a small set of dimensions and flags, and initializes a 3920-byte state tail. The persistent weather object is created by `0x145C0C5F0` and attaches multiple helper arrays plus a `depthonly_draw` resource. The static path supports rain collision and environmental wetness resources, but it does not expose actor contact queries.
+
 ## Water simulation and interaction
 
 `0x141E490F0` registers `water_compressed_simulation_rendertarget` and attaches settings entries to the water resource.
@@ -96,6 +100,8 @@ The named rain resource is created with a 3936-byte object, then passed through 
 `0x1426205C0` switches water-system states. Its initialization state creates a water resource, copies three vector blocks into global water state, initializes several water resource handles, and registers `water_heightpass`, `water_depthoccluderpass`, and `water_mainscenedeferred` passes.
 
 The state switch has separate branches for reset, resource creation, and pass registration. The water path therefore has explicit lifecycle phases. A VR port should keep the water simulation state shared and duplicate only eye-dependent water rendering passes.
+
+`0x145B83070` maps the water mode field at `a2 + 444` to internal modes `1` through `5`, copies dimensions from `a2 + 412`, `+416`, and `+420`, and selects default vector/format values. `0x142620140` creates the water system's encoded resource name and state object. These functions define water configuration and lifecycle, not buoyancy or swimmer force integration.
 
 The static evidence supports a GPU water simulation and rendering pipeline.
 
