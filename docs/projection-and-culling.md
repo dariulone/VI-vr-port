@@ -65,6 +65,8 @@ Gameplay FOV controls design intent. OpenXR tangents control the projection matr
 
 The first runtime trace should log the camera output record, the projection constant buffer, and the viewport for a stationary scene while the headset rotates.
 
+The render-owned handoff provides an additional static trace target. The active camera owner at `0x142008AE0` calls `0x143231B30`, which prepares a resource record and reaches `0x1453159B0`. That copier writes three vector-sized blocks at render-object offsets `+0x30`, `+0x40`, and `+0x50`. Watch these blocks together with the later constant-buffer bind. This separates camera-state mutation from the packet that the render graph actually receives.
+
 ## Culling
 
 The image contains explicit `InstanceCulling`, `meshlet_culling`, and portal stencil culling paths.

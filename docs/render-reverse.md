@@ -125,6 +125,21 @@ The static call chain around this boundary is now more specific.
 
 The neighboring `0x14322F800` and `0x14322FAD0` helpers normalize the delta between camera vectors and interpolate it with the camera scale at `+0x31C`. They are used for camera transitions and constrained motion. They should remain upstream of the stereo hook so the HMD pose changes only the render view.
 
+### Camera render-object handoff
+
+The next downstream handoff is now statically identified.
+
+| Function | RVA | Evidence |
+|---|---:|---|
+| Camera owner tick | `0x142008AE0` | Updates the camera source, then calls `0x143231B30` when the render state is active |
+| Render camera preparation | `0x143231B30` | Reads the camera object at owner `+0x230`, calls `0x14322F690` with a unit blend, builds command/resource records, and submits them through `0x1400D0320` and `0x1400D0610` |
+| Camera packet copy | `0x1453159B0` | Copies three 16-byte blocks from the temporary camera packet into the render-owned object at `+0x30`, `+0x40`, and `+0x50` |
+| Render-owned object accessor | `0x144FEBB80` | Returns the object at `a1 + 1184`, so the copied fields are at owner-relative `+1216`, `+1232`, and `+1248` |
+
+The temporary packet passed through this path contains the four-component result of `0x14322F690`, a scalar broadcast from the source camera, and a second four-component block prepared by the render preparation function. The exact semantic names of those blocks remain runtime candidates. The copy itself is proven and gives the first practical watchpoint for a per-eye camera packet before the generic resource bookkeeping runs.
+
+The recommended first live trace is therefore `0x142008AE0 → 0x143231B30 → 0x1453159B0`. Capture the three destination blocks, their owner pointer, and the following resource identifier. If the first block is the view or camera position, duplicate the packet for left and right eyes at this boundary. If it is a culling-only packet, continue to the first constant upload after `0x1400D0610`.
+
 ## Native stereo insertion
 
 The native stereo path should be inserted at the boundary where the camera packet becomes render constants.

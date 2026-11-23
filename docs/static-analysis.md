@@ -68,6 +68,8 @@ Static control flow now identifies a PresentX-shaped path. The worker invokes a 
 
 `sub_14322FBD0` selects a field at offset `+0x314` or `+0x318` depending on a camera flag, passes the value through the camera output helpers, and stores a packed result in a caller-owned record. These fields are high-value runtime watchpoints for FOV and projection work. Their semantic names are still candidates until a frame capture or live trace confirms the matrix upload.
 
+The downstream camera handoff is also statically visible. `0x142008AE0` updates the active camera source and calls `0x143231B30`. That preparation function reaches `0x1453159B0`, which copies three 16-byte blocks into the render-owned object returned by `0x144FEBB80`, at offsets `+0x30`, `+0x40`, and `+0x50` relative to that object. It then continues through generic resource bookkeeping at `0x1400D0320` and `0x1400D0610`. These fields are the first concrete render-object watchpoints after the camera output helpers.
+
 ### Projection strings
 
 The following data labels have code or table references.

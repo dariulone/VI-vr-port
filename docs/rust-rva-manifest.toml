@@ -15,6 +15,11 @@ camera_output_builder = "0x322f5d0"
 camera_output_finalizer = "0x322f8d0"
 camera_view_update = "0x3230750"
 camera_clip_update = "0x32307f0"
+camera_owner_tick = "0x2008ae0"
+camera_render_prepare = "0x3231b30"
+camera_packet_copy = "0x53159b0"
+render_resource_register = "0xd0320"
+render_resource_finalize = "0xd0610"
 
 [pose]
 pose_source = "0x523b630"

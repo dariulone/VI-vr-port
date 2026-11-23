@@ -12,6 +12,11 @@ pub struct RvaManifest {
     pub camera_output_finalizer: usize,
     pub camera_view_update: usize,
     pub camera_clip_update: usize,
+    pub camera_owner_tick: usize,
+    pub camera_render_prepare: usize,
+    pub camera_packet_copy: usize,
+    pub render_resource_register: usize,
+    pub render_resource_finalize: usize,
     pub pose_source: usize,
     pub pose_copy: usize,
     pub pose_finalize: usize,
@@ -34,6 +39,11 @@ pub const CURRENT_MANIFEST: RvaManifest = RvaManifest {
     camera_output_finalizer: 0x322F8D0,
     camera_view_update: 0x3230750,
     camera_clip_update: 0x32307F0,
+    camera_owner_tick: 0x2008AE0,
+    camera_render_prepare: 0x3231B30,
+    camera_packet_copy: 0x53159B0,
+    render_resource_register: 0xD0320,
+    render_resource_finalize: 0xD0610,
     pose_source: 0x523B630,
     pose_copy: 0x523B680,
     pose_finalize: 0x523BD00,
@@ -64,6 +74,7 @@ mod tests {
         assert_ne!(CURRENT_MANIFEST.present_lifecycle, 0);
         assert_ne!(CURRENT_MANIFEST.present_core, 0);
         assert_ne!(CURRENT_MANIFEST.camera_output_finalizer, 0);
+        assert_ne!(CURRENT_MANIFEST.camera_packet_copy, 0);
         assert_ne!(CURRENT_MANIFEST.pose_finalize, 0);
         assert_ne!(CURRENT_MANIFEST.projectile_location, 0);
         assert_eq!(present_path(), PresentPath::XboxPlaneSubmission);
