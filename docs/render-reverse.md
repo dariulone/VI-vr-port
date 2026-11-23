@@ -53,6 +53,15 @@ The worker contains a second indirect queue call at byte offset 0x100. The call 
 
 The record builder immediately before this call walks presentation records with an 80-byte stride, groups up to 256 records, stores source objects and plane metadata in temporary arrays, calls sub_1424827C0 to derive scaled placement values, calls sub_140A1C290 with frame-event ids 5 and 6, and clears the queue token after the call.
 
+The worker has a separate batch submission at byte offset `0x118`.
+
+| Queue slot | Arguments observed | Static role |
+|---:|---|---|
+| `+0x118` | `count`, a three-lane temporary record array, `qword_1475E0E88`, flag `3` | Submits up to 256 command or resource records. The worker then invokes the per-record callbacks stored in the second and third temporary lanes. |
+| `+0x100` | presentation count, `&v86`, `&v84` | Submits the presentation descriptors after placement conversion and frame-event scheduling. |
+
+For record type `3`, the worker updates `qword_1475E0E88`, calls `0x1424826A0`, and then calls `0x142482660`. Other presentation records build the `v86` and `v84` arrays from 24-byte source blocks, call `0x1424827C0`, schedule event `5`, invoke `+0x100`, schedule event `6`, and update pacing through `0x1424828B0`. This ordering is the strongest static separation between resource submission and the host-facing presentation path.
+
 This is the strongest static PresentX call site. It matches the public runtime evidence that the Xbox queue has presentation slots beyond the desktop D3D12 chain. The exact ABI signature still needs a live queue proxy, but the control flow and plane argument construction are now proven statically.
 
 sub_1424827C0 converts timing and placement values into integer source and destination coordinates and writes them into per-slot presentation state. It uses qword_1475DE4B0 records with a 144-byte stride.
@@ -80,6 +89,7 @@ The renderer boundary is therefore:
 
     scene recording
         -> command or resource worker
+        -> queue method at vtable +0x118 for resource batches
         -> queue method at vtable +0x100 with plane arrays
         -> sub_1424826A0 presentation core
         -> frame-event bookkeeping

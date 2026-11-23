@@ -48,7 +48,7 @@ The import table contains `d3d12_xs.dll`, `xg_xs.dll`, `xmem.dll`, `GameInput.dl
 
 The literal `PresentX` was not found in the executable. The presenter must therefore be found by tracing the object created by the graphics initializer and the first successful frame submission. A source-level name cannot be inferred from the stripped image.
 
-Static control flow now identifies a PresentX-shaped path. The worker invokes a queue method at byte offset `0x100` with a plane count and two descriptor arrays. `0x142484180` selects one of four presentation slots and calls `0x1424826A0`, which rotates the slot ring, submits a 69,888-byte presentation payload through the device, and schedules frame events. The exact Xbox ABI signature remains a runtime validation item.
+Static control flow now identifies a PresentX-shaped path. The worker invokes a queue method at byte offset `0x100` with a presentation count and two descriptor arrays after calling `0x1424827C0` and scheduling frame events. A separate queue method at byte offset `0x118` receives batches of up to 256 command or resource records with flag `3`. `0x142484180` selects one of four presentation slots and calls `0x1424826A0`, which rotates the slot ring, submits a 69,888-byte presentation payload through the device, and schedules frame events. The exact Xbox ABI signature remains a runtime validation item.
 
 ## Camera data path
 

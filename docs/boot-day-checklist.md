@@ -22,7 +22,9 @@ Attach the Rust bridge at these static boundaries.
 | Device initialization | 0x2478440 | device pointer, HWND, resource arrays |
 | Frame entry | 0x41E9E0 | frame id, context pointer |
 | Worker | 0x2481E90 | record type, queue index, command count |
-| Queue execute or sync | 0x2482660 | queue object, slot 0x118 arguments |
+| Queue batch submit | 0x2481E90 | queue object, slot +0x118, batch count, flag 3 |
+| Queue execute or sync | 0x2482660 | queue object, slot +0x118 completion arguments |
+| Plane submission | 0x2481E90 | queue object, slot +0x100, presentation count, v86/v84 arrays |
 | Present lifecycle | 0x2484180 | current four-slot index and token |
 | Presentation core | 0x24826A0 | plane count, source resources, payload |
 | Camera render packet | 0x2008AE0 -> 0x3231B30 -> 0x53159B0 | owner pointer, three 16-byte destination blocks at render-object +0x30/+0x40/+0x50 |
