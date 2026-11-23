@@ -169,6 +169,8 @@ This is a concrete visibility or bounds handoff. It is useful for verifying that
 
 The nearby `0x1404128B0 → 0x144440C60` path is a second visibility candidate. It normalizes the three packet vectors, derives scalar limits, and constructs several vector pairs that are later consumed by resource records. Its inputs and outputs should be logged before changing any per-eye culling policy.
 
+The resource handoff after that calculation is also separated. `0x14559A400` stores the two resource pointers and queues the record through the runtime's thread-local work ring. `0x144E29640` selects a resource method from flags at `a2 + 0xA8` and dispatches through `0x144E296B0`, with `0x14002DAB0` as the completion path. These helpers identify the indirect resource boundary without proving a specific projection constant slot.
+
 ## Native stereo insertion
 
 The native stereo path should be inserted at the boundary where the camera packet becomes render constants.

@@ -24,6 +24,8 @@ pub struct RvaManifest {
     pub camera_visibility_handle: usize,
     pub camera_frustum_prepare: usize,
     pub camera_frustum_shape_math: usize,
+    pub frustum_resource_wrapper: usize,
+    pub frustum_resource_dispatch: usize,
     pub instance_culling_init: usize,
     pub instance_culling_dispatch: usize,
     pub culling_range_accumulator: usize,
@@ -63,6 +65,8 @@ pub const CURRENT_MANIFEST: RvaManifest = RvaManifest {
     camera_visibility_handle: 0x31BC70,
     camera_frustum_prepare: 0x4128B0,
     camera_frustum_shape_math: 0x4440C60,
+    frustum_resource_wrapper: 0x559A400,
+    frustum_resource_dispatch: 0x4E29640,
     instance_culling_init: 0x5700770,
     instance_culling_dispatch: 0x25D8590,
     culling_range_accumulator: 0x55BFC50,
@@ -107,6 +111,7 @@ mod tests {
         assert_ne!(CURRENT_MANIFEST.instance_culling_dispatch, 0);
         assert_ne!(CURRENT_MANIFEST.camera_visibility_consumer, 0);
         assert_ne!(CURRENT_MANIFEST.camera_frustum_prepare, 0);
+        assert_ne!(CURRENT_MANIFEST.frustum_resource_dispatch, 0);
         assert_eq!(QUEUE_PLANE_SUBMIT_SLOT, 0x100);
         assert_eq!(QUEUE_BATCH_SUBMIT_SLOT, 0x118);
         assert_ne!(CURRENT_MANIFEST.pose_finalize, 0);
