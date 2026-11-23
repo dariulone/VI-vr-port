@@ -102,6 +102,8 @@ The private pose boundary should initially use an opaque record.
 
 The current static evidence proves a 0x80-byte per-bone stride and a hash-to-record lookup. It does not prove the component order of all 128 bytes, so the Rust type must remain opaque until runtime capture validates the layout.
 
+The pose crate also records the proven metadata byte offset `0x63` and the four auxiliary blocks. It exposes that byte for diagnostics while keeping the remaining record opaque.
+
 ## Frame state machine
 
 Keep the state transitions explicit.

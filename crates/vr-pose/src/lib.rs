@@ -1,10 +1,18 @@
 #![forbid(unsafe_code)]
 
 pub const POSE_RECORD_STRIDE: usize = 0x80;
+pub const POSE_METADATA_FLAG_OFFSET: usize = 0x63;
+pub const POSE_AUX_BLOCK_COUNT: usize = 4;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct PoseRecord128 {
     pub bytes: [u8; POSE_RECORD_STRIDE],
+}
+
+impl PoseRecord128 {
+    pub fn metadata_flag(self) -> u8 {
+        self.bytes[POSE_METADATA_FLAG_OFFSET]
+    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -57,6 +65,14 @@ mod tests {
         let buffer = PoseBuffer::new(596);
         assert_eq!(buffer.count(), 596);
         assert_eq!(std::mem::size_of::<PoseRecord128>(), POSE_RECORD_STRIDE);
+        assert_eq!(POSE_AUX_BLOCK_COUNT, 4);
+    }
+
+    #[test]
+    fn pose_metadata_flag_uses_the_static_byte_offset() {
+        let mut record = PoseRecord128 { bytes: [0; POSE_RECORD_STRIDE] };
+        record.bytes[POSE_METADATA_FLAG_OFFSET] = 7;
+        assert_eq!(record.metadata_flag(), 7);
     }
 
     #[test]
