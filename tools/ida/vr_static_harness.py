@@ -48,6 +48,15 @@ STATIC_TARGETS = [
     ("pose_aux_array_build", 0x523C690),
     ("pose_gate_update", 0x523C810),
     ("bone_hash_map", 0x523C6F0),
+    ("vehicle_request_system", 0x5814350),
+    ("vehicle_deform_init", 0xCBF1F0),
+    ("explosion_damage_init", 0x2511AB0),
+    ("gpu_particle_collision_init", 0x1AF3BA0),
+    ("rain_collision_init", 0x1D87EF0),
+    ("water_simulation_init", 0x1E490F0),
+    ("water_system_state", 0x26205C0),
+    ("constraint_name_resolver", 0x26870F0),
+    ("horse_collision_response", 0x1D8C9B0),
 ]
 
 

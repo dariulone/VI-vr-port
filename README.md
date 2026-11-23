@@ -46,6 +46,6 @@ The repository contains derived facts, RVAs, curated technical strings, and auth
 | Image base | `0x140000000` |
 | Input SHA-256 | `E95020B2FA4A721DB3DF59FDECF75621730AC559D8835252F6C3B658D5A08993` |
 | Entry point | `0x1456A1EC8` |
-| Function count | 434,406 |
+| Function count | 434,489 |
 
 The hash is included so independent researchers can confirm that their local analysis refers to the same executable. The file itself is never required by this repository.
