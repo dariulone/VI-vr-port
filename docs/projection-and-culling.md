@@ -82,6 +82,8 @@ The SIMD operations include cross-product-like shuffles, normalization, min/max 
 
 After the vector generation, trace the resource wrapper at `0x14559A400` and the flag-based dispatch at `0x144E29640`. The selected `0x144E296B0` stage computes an interval or intersection against `a2 + 0x20D0`, then updates a sorted 16-byte range list at `a2 + 192`, `+196`, and `+200`. This is CPU visibility preparation. The GPU buffer or descriptor must be traced after this list is consumed.
 
+The range consumer at `0x14002DAB0` drains that list, compares each endpoint against `a1 + 0x20D0`, and invokes the range dispatcher again or resolves the associated resource through `0x145329B50`. Its callers contain no direct D3D12 upload import, confirming that the projection constant bind lies farther downstream in the indirect command path.
+
 ## Culling
 
 The image contains explicit `InstanceCulling`, `meshlet_culling`, and portal stencil culling paths.

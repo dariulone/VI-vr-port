@@ -28,6 +28,7 @@ pub struct RvaManifest {
     pub frustum_resource_dispatch: usize,
     pub frustum_range_dispatch: usize,
     pub frustum_intersection_math: usize,
+    pub frustum_range_process: usize,
     pub instance_culling_init: usize,
     pub instance_culling_dispatch: usize,
     pub culling_range_accumulator: usize,
@@ -71,6 +72,7 @@ pub const CURRENT_MANIFEST: RvaManifest = RvaManifest {
     frustum_resource_dispatch: 0x4E29640,
     frustum_range_dispatch: 0x4E296B0,
     frustum_intersection_math: 0x4E298A0,
+    frustum_range_process: 0x2DAB0,
     instance_culling_init: 0x5700770,
     instance_culling_dispatch: 0x25D8590,
     culling_range_accumulator: 0x55BFC50,
@@ -117,6 +119,7 @@ mod tests {
         assert_ne!(CURRENT_MANIFEST.camera_frustum_prepare, 0);
         assert_ne!(CURRENT_MANIFEST.frustum_resource_dispatch, 0);
         assert_ne!(CURRENT_MANIFEST.frustum_range_dispatch, 0);
+        assert_ne!(CURRENT_MANIFEST.frustum_range_process, 0);
         assert_eq!(QUEUE_PLANE_SUBMIT_SLOT, 0x100);
         assert_eq!(QUEUE_BATCH_SUBMIT_SLOT, 0x118);
         assert_ne!(CURRENT_MANIFEST.pose_finalize, 0);

@@ -171,6 +171,8 @@ The nearby `0x1404128B0 → 0x144440C60` path is a second visibility candidate. 
 
 The resource handoff after that calculation is also separated. `0x14559A400` stores the two resource pointers and queues the record through the runtime's thread-local work ring. `0x144E29640` selects a resource method from flags at `a2 + 0xA8` and dispatches through `0x144E296B0`, with `0x14002DAB0` as the completion path. `0x144E296B0` computes the CPU interval or intersection and maintains a sorted range list at `a2 + 192`, `+196`, and `+200`. This is a visibility-preparation boundary, not proof of a direct GPU constant upload.
 
+`0x14002DAB0` consumes the sorted ranges and returns through the same CPU resource layer. The static chain therefore ends at an indirect command/resource handoff, with no direct upload symbol available in the import table.
+
 ## Native stereo insertion
 
 The native stereo path should be inserted at the boundary where the camera packet becomes render constants.
