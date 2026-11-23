@@ -29,6 +29,7 @@ The repository contains derived facts, RVAs, curated technical strings, and auth
 11. [Weapon aim](docs/weapon-aim.md)
 12. [Boot-day checklist](docs/boot-day-checklist.md)
 13. [Rust RVA manifest](docs/rust-rva-manifest.toml)
+14. [Rust workspace](crates/vr-core/src/lib.rs)
 
 ## Analysis identity
 

@@ -1,0 +1,9 @@
+[package]
+name = "gta6-vr-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lints]
+workspace = true
+
