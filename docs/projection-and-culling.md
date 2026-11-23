@@ -25,6 +25,19 @@ The signs and depth terms must follow the engine's matrix convention. Confirm ro
 
 The projection center is the natural place to represent lens asymmetry. Do not change only a global FOV scalar. The per-eye tangents determine both FOV and optical center.
 
+## Camera output path
+
+The static camera path has a narrower output boundary than the settings labels.
+
+| Function | RVA | Static behavior |
+|---|---:|---|
+| Camera output builder | 0x14322F5D0, RVA 0x322F5D0 | Clamps source values and writes camera output fields at caller offsets +0x50, +0x54, and +0xA0 |
+| Camera output finalizer | 0x14322F8D0, RVA 0x322F8D0 | Combines camera state at +0x2D0, +0x2E0, +0x320, +0x330, +0x334 and writes a four-component output vector through the R8 pointer |
+| View state update | 0x143230750, RVA 0x3230750 | Reads +0x2D0 and +0x2E0, calls scalar camera helpers, and writes +0x31C |
+| Clip and limit update | 0x1432307F0, RVA 0x32307F0 | Updates +0x330, +0x334, and +0x320 from camera limits |
+
+The output finalizer is the first strong asymmetric-projection watchpoint. A Rust hook can capture the original four components, preserve gameplay and cinematic values, and replace only the eye-dependent projection terms in the downstream render packet. The function itself does not prove the final matrix convention, so the next validation still needs one constant-buffer capture.
+
 ## FOV handling
 
 `fieldOfView` is a data label referenced by configuration tables. The camera state functions also write angle-like values at `+0x318` and `+0x328`.

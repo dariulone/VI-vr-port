@@ -104,6 +104,17 @@ sub_14041E9E0 has a distinct frame marker and several context methods.
 
 The frame wrapper is not the presenter. It is a reliable place to attach a trace that captures the current frame index, active command context, and eye packet before the scene begins.
 
+## Camera output boundary
+
+The camera output is assembled before the per-ped render update.
+
+- 0x14322F5D0 clamps source camera values and writes caller fields at +0x50, +0x54, and +0xA0.
+- 0x14322F8D0 combines camera state at +0x2D0, +0x2E0, +0x320, +0x330, and +0x334, then writes a four-component output vector through its R8 pointer.
+- 0x143230750 updates +0x31C after reading the camera vectors.
+- 0x1432307F0 updates +0x330, +0x334, and +0x320 from camera limits.
+
+For native stereo, capture the four-component output from 0x14322F8D0 and the first render constant upload that consumes it. Apply OpenXR's per-eye tangents at that boundary. Keep the original camera state for gameplay, animation, and culling inputs.
+
 ## Native stereo insertion
 
 The native stereo path should be inserted at the boundary where the camera packet becomes render constants.
