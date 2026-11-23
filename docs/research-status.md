@@ -6,12 +6,13 @@
 - The PE is x64 with image base `0x140000000`.
 - Renderer initialization creates a window and calls `D3D12XboxCreateDevice`.
 - Camera setting, camera state, culling, mirror, skinning, motion matching, and pose matching anchors are present.
+- The camera helper chain now shows interpolation between `+0x2D0` and `+0x2E0`, constrained height at `+0x320`, and a four-component output at `0x14322F8D0`.
 - The executable has no OpenXR, OpenVR, or SteamVR import or string.
 - A curated technical string table is available in [strings.md](strings.md).
 
 ## Candidate
 
-- `0x1432309C0` and `0x14322FBD0` are camera matrix and FOV tracing candidates.
+- `0x1432309C0` and `0x14322FBD0` are camera state and normalized output tracing candidates. The final projection matrix upload remains downstream.
 - The presenter is downstream of the graphics object created by `0x142478440`.
 - `ped_skinning_cs` is the final bone-to-vertex consumer.
 - `GoalRotationOffsetsKeyedArray` and the pose matcher resources are useful VRIK integration anchors.

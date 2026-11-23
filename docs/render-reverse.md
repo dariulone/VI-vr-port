@@ -115,6 +115,16 @@ The camera output is assembled before the per-ped render update.
 
 For native stereo, capture the four-component output from 0x14322F8D0 and the first render constant upload that consumes it. Apply OpenXR's per-eye tangents at that boundary. Keep the original camera state for gameplay, animation, and culling inputs.
 
+The static call chain around this boundary is now more specific.
+
+    0x14322FBD0
+        -> select +0x314 or +0x318
+        -> 0x14322F5D0 scalar clamp and caller record fields
+        -> 0x14322F8D0 four-component camera output
+        -> quantized record at caller +0x30
+
+The neighboring `0x14322F800` and `0x14322FAD0` helpers normalize the delta between camera vectors and interpolate it with the camera scale at `+0x31C`. They are used for camera transitions and constrained motion. They should remain upstream of the stereo hook so the HMD pose changes only the render view.
+
 ## Native stereo insertion
 
 The native stereo path should be inserted at the boundary where the camera packet becomes render constants.

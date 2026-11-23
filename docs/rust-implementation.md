@@ -146,6 +146,8 @@ The first Rust adapter manifest should expose these static targets.
 
 The wrappers should log the frame id and resource ids around these calls. They should never assume that the presentation core has the same signature as a desktop IDXGISwapChain method.
 
+The checked-in `gta6-vr-render-bridge` manifest mirrors these targets and also includes the camera view and clip updates, pose source and finalizer, skinning record builder, PrecisionAimContext, weapon component mapping, and projectile-location registration. This keeps the boot-day hook list in one versioned Rust constant while the TOML file remains convenient for external harnesses.
+
 ## Asymmetric projection
 
 OpenXR supplies per-eye tangents. Keep the pure math in vr-core.

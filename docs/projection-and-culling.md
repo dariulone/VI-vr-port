@@ -38,6 +38,19 @@ The static camera path has a narrower output boundary than the settings labels.
 
 The output finalizer is the first strong asymmetric-projection watchpoint. A Rust hook can capture the original four components, preserve gameplay and cinematic values, and replace only the eye-dependent projection terms in the downstream render packet. The function itself does not prove the final matrix convention, so the next validation still needs one constant-buffer capture.
 
+## Recovered camera math
+
+The surrounding helpers clarify which values belong to camera motion and which values are candidates for the render packet.
+
+| Function | Static operation | VR consequence |
+|---|---|---|
+| `0x14322F690` | Interpolates between the two 4-component camera vectors at `+0x2D0` and `+0x2E0` using a caller scalar and the height value at `+0x320`. A constrained branch clamps against `+0x334`, `+0x2E8`, and the source-camera limits at `+0xC4` and `+0xBC`. | Preserve this canonical camera position and orientation input. Apply eye offsets after the interpolation so head IPD does not feed back into gameplay state. |
+| `0x14322F8D0` | Builds the final 4-component output. With flag `0x4000` it linearly interpolates the two camera vectors. Otherwise it selects the vector at `+0x2D0` or `+0x2E0` according to flag `0x4`, then derives the fourth component from `+0x320` and the constrained scalar. | Capture this output and the first constant upload that consumes it. This is the best place to split one camera packet into two eye packets. |
+| `0x14322FBD0` | Selects the scalar at `+0x314` or `+0x318` based on flag `0x10`, calls the output builder and finalizer, then quantizes the resulting vector using a 32-unit scale before storing it at caller `+0x30`. | Treat the quantized record as a downstream camera-state or culling input. Do not replace it with the headset projection matrix. |
+| `0x14322F800` / `0x14322FAD0` | Normalize the delta between the finalizer output and a second camera vector, scale it by `+0x31C`, and interpolate with the caller scalar. `0x14322FAD0` has a special mode that divides the scale by the source-camera value at `+0xC8` plus one. | These are transition and camera-motion helpers. Hooking here risks changing gameplay or cinematic interpolation. Use them as trace points, not as the stereo insertion boundary. |
+
+The immediate constants used by this path include `1.0f` for the interpolation blend, `-0.5f` in the normalization fallback, and a small positive epsilon for zero-length checks. Their presence supports the interpretation above, but it does not establish the engine's matrix row or depth convention. That convention still comes from a captured render constant.
+
 ## FOV handling
 
 `fieldOfView` is a data label referenced by configuration tables. The camera state functions also write angle-like values at `+0x318` and `+0x328`.

@@ -75,6 +75,7 @@ pub struct AimPacket {
     pub frame_id: u64,
     pub mode: AimMode,
     pub grip_world: [f32; 3],
+    pub camera_forward: [f32; 3],
     pub muzzle_world: [f32; 3],
     pub muzzle_forward: [f32; 3],
     pub trigger_pressed: bool,
@@ -90,7 +91,7 @@ impl AimPacket {
 
     pub fn shot_direction(self) -> [f32; 3] {
         match self.mode {
-            AimMode::Camera => normalize(self.grip_world),
+            AimMode::Camera => normalize(self.camera_forward),
             AimMode::Muzzle => normalize(self.muzzle_forward),
         }
     }
@@ -151,12 +152,28 @@ mod tests {
             frame_id: 7,
             mode: AimMode::Muzzle,
             grip_world: [0.0, 0.0, 0.0],
+            camera_forward: [1.0, 0.0, 0.0],
             muzzle_world: [1.0, 2.0, 3.0],
             muzzle_forward: [0.0, 0.0, 2.0],
             trigger_pressed: true,
         };
         assert_eq!(packet.shot_origin(), [1.0, 2.0, 3.0]);
         assert_eq!(packet.shot_direction(), [0.0, 0.0, 1.0]);
+    }
+
+    #[test]
+    fn camera_mode_uses_camera_forward() {
+        let packet = AimPacket {
+            frame_id: 8,
+            mode: AimMode::Camera,
+            grip_world: [5.0, 0.0, 0.0],
+            camera_forward: [0.0, 3.0, 0.0],
+            muzzle_world: [1.0, 2.0, 3.0],
+            muzzle_forward: [1.0, 0.0, 0.0],
+            trigger_pressed: true,
+        };
+        assert_eq!(packet.shot_origin(), [5.0, 0.0, 0.0]);
+        assert_eq!(packet.shot_direction(), [0.0, 1.0, 0.0]);
     }
 }
 

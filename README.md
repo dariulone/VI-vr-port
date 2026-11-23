@@ -6,7 +6,7 @@ The repository contains derived facts, RVAs, curated technical strings, and auth
 
 ## Current status
 
-- IDA Pro 9.2 database created at `work/ida/game_scarlett_master.i64`
+- IDA Pro 9.2 database created for the analyzed x64 image
 - Native graphics initialization located
 - Camera state and view-update candidates located
 - Instance, meshlet, portal-stencil, and skinning paths located
