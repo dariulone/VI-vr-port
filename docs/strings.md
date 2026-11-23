@@ -32,6 +32,19 @@ This is a small, purpose-selected list of renderer, camera, culling, skinning, a
 | `Wpn_LOC_Projectile` | `0x146782DC4` | `0x6782DC4` | projectile location | `0x145B20870` |
 | `sfIsAiming` | `0x146781117` | `0x6781117` | reticle and aim UI | `0x141F69F10` |
 | `MISSLE_FIRED` | `0x146788028` | `0x6788028` | missile event | `0x1458FD140` |
+| `VehicleRequests` | `0x14677B1D3` | `0x67B1D3` | vehicle request system | `0x145814350` |
+| `VehicleRequestsSimple` | `0x146782D1A` | `0x682D1A` | vehicle request system | `0x145814350` |
+| `vehicle_deform` | `0x14677FA3E` | `0x677FA3E` | vehicle deformation | `0x140CBF1F0` |
+| `ExplosionVehicleDamageBuffer` | `0x14677E0A8` | `0x677E0A8` | vehicle damage accumulation | `0x142511AB0` |
+| `ExplosionPedDamageBuffer` | `0x14677E0C5` | `0x677E0C5` | ped damage accumulation | `0x142511AB0` |
+| `GpuParticleCollision` | `0x14677F497` | `0x677F497` | GPU particle collision | `0x141AF3BA0` |
+| `raincollision` | `0x14677F489` | `0x677F489` | weather particle collision | `0x141D87EF0` |
+| `PlClothes` | `0x14677C4B9` | `0x677C4B9` | clothes state gate | `0x145CB8080` |
+| `water_compressed_simulation_rendertarget` | `0x14677AA5C` | `0x677AA5C` | water simulation target | `0x141E490F0` |
+| `water_heightpass` | `0x14677B5BE` | `0x677B5BE` | water height pass | `0x1426205C0` |
+| `water_depthoccluderpass` | `0x14677B5CF` | `0x677B5CF` | water depth pass | `0x1426205C0` |
+| `constraint_` | `0x146786059` | `0x6786059` | constraint index naming | `0x1426870F0` |
+| `Horse Collision Response` | `0x146781E46` | `0x6781E46` | species collision response | `0x141D8C9B0` |
 
 ## Import labels
 

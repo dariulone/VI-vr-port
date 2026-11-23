@@ -12,6 +12,7 @@
 - The read-only IDA harness has been verified against the current database and exports 21 static VR targets with xrefs.
 - The Rust runtime probe frame validator covers the observed queue and presentation invariants.
 - The Rust OpenXR frame coordinator, version gate, and typed live hook order are implemented and unit-tested.
+- Physics-related static anchors now cover vehicle deformation, explosion damage buffers, GPU particle/rain collision, water simulation passes, constraint naming, and horse collision response.
 - The executable has no OpenXR, OpenVR, or SteamVR import or string.
 - A curated technical string table is available in [strings.md](strings.md).
 
@@ -30,6 +31,7 @@
 - Source pose producer and the semantic names of the four mapped vector blocks
 - Per-eye treatment of temporal, mirror, portal, and screen-space passes
 - Proof that the translated runtime can boot this executable
+- Physics world owner, collision query ABI, solver tick, and gameplay contact result structures
 
 ## Next experiments
 
