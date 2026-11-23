@@ -1,0 +1,38 @@
+# x64dbg live attach map
+
+This is a read-only attach order for the first translated process. It assumes the module image base is checked before applying the RVAs. It does not launch a binary or modify process memory.
+
+## Attach order
+
+| Order | RVA | Breakpoint role | Read-only data |
+|---:|---:|---|---|
+| 1 | `0x2478440` | Device initialization | device pointer, HWND, created object pointers |
+| 2 | `0x2008AE0` | Camera owner tick | camera owner, active source, render-state flag |
+| 3 | `0x3231B30` | Camera render preparation | owner `+0x230`, temporary packet, resource record |
+| 4 | `0x53159B0` | Render packet copy | destination object and three 16-byte blocks at `+0x30/+0x40/+0x50` |
+| 5 | `0x4128B0` | Frustum preparation | packet `+0x4D0/+0x4E0/+0x4F0`, scalar fields `+0x500/+0x504/+0x508` |
+| 6 | `0x4440C60` | Visibility-shape math | normalized vectors, derived fields `+0x70…+0xE0`, range scalars |
+| 7 | `0x4E296B0` | CPU range dispatch | input vectors, `a2+0x20D0`, range list at `+192/+196/+200` |
+| 8 | `0x25D8590` | Instance-culling batch | pass id, compact index count, culling context `+0xF0` |
+| 9 | `0x2481E90` | Worker queue | record type, batch count, slot `+0x118`, plane slot `+0x100` |
+| 10 | `0x24826A0` | Presentation core | four-slot index, token, payload object |
+| 11 | `0x2484180` | Presentation lifecycle | frame token, timing, slot record |
+| 12 | `0x2482BC0` | Presentation pacing | target timestamp and QPC wait |
+| 13 | `0x523B680` | Pose copy | source/destination, count `+0x0C`, `0x80` stride |
+| 14 | `0x523BD00` | Pose finalization | auxiliary destinations, metadata byte `+0x63`, gated state |
+| 15 | `0x523C6F0` | Bone hash mapping | hash, resolved record, four auxiliary block indices |
+
+## First capture sequence
+
+1. Verify the translated module image base and record the local build hash.
+2. Capture one mono frame through order `1` to `12`.
+3. Capture one pose update through order `13` to `15` without changing pose bytes.
+4. Compare the camera packet, frustum range list, culling count, plane resource, completion token, and pose metadata by frame id.
+5. Add OpenXR eye packets only after the mono sequence is stable.
+
+## Read-only guardrails
+
+- Do not patch instructions, registers, resource states, or pose bytes during the first capture.
+- Keep one process instance and one debugger session.
+- Store raw traces privately using [runtime-probe-schema.md](runtime-probe-schema.md).
+- Stop on a reused token, missing completion record, invalid pose stride, or a range-list count that exceeds the observed batch limits.
