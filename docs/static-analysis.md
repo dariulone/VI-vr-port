@@ -17,6 +17,8 @@ Addresses below are image addresses. RVAs are relative to image base `0x14000000
 | Post-device setup | `0x142479690` | `0x2479690` | Selects memory and resource budgets after device initialization |
 | D3D12 device import | `0x146793C18` | `0x5F93C18` | `D3D12XboxCreateDevice` |
 | HAL frame entry candidate | `0x14041E9E0` | `0x41E9E0` | Calls `HAL::BeginFrame` and begins per-frame state |
+| Presentation lifecycle | `0x142484180` | `0x2484180` | Selects a four-slot presentation record and calls the presentation core |
+| Presentation core | `0x1424826A0` | `0x24826A0` | Rotates present resources and calls device frame-event helpers |
 
 `0x142478440` is the first reliable renderer boundary. It creates a Win32 window, prepares a 20-word device descriptor, calls `D3D12XboxCreateDevice`, stores the device pointer in shared globals, allocates XMem backing memory, creates multiple device-owned objects, initializes command or resource groups, and constructs the Xbox ray-tracing helper.
 
@@ -45,6 +47,8 @@ The exact Xbox-specific method names require a live translation layer or a known
 The import table contains `d3d12_xs.dll`, `xg_xs.dll`, `xmem.dll`, `GameInput.dll`, `XboxBvhBuilder.dll`, `amd_fidelityfx_loader_xbox.dll`, and other platform modules. No OpenXR, OpenVR, SteamVR, `xrCreateInstance`, `xrBeginFrame`, or desktop DXGI swap-chain import was found.
 
 The literal `PresentX` was not found in the executable. The presenter must therefore be found by tracing the object created by the graphics initializer and the first successful frame submission. A source-level name cannot be inferred from the stripped image.
+
+Static control flow now identifies a PresentX-shaped path. The worker invokes a queue method at byte offset `0x100` with a plane count and two descriptor arrays. `0x142484180` selects one of four presentation slots and calls `0x1424826A0`, which rotates the slot ring, submits a 69,888-byte presentation payload through the device, and schedules frame events. The exact Xbox ABI signature remains a runtime validation item.
 
 ## Camera data path
 
