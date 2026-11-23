@@ -59,6 +59,9 @@ pub struct RvaManifest {
     pub water_system_helper: usize,
     pub constraint_name_resolver: usize,
     pub horse_collision_response: usize,
+    pub physics_material_params: usize,
+    pub rigid_body_params: usize,
+    pub vehicle_handling_data: usize,
 }
 
 pub const CURRENT_MANIFEST: RvaManifest = RvaManifest {
@@ -118,6 +121,9 @@ pub const CURRENT_MANIFEST: RvaManifest = RvaManifest {
     water_system_helper: 0x2620140,
     constraint_name_resolver: 0x26870F0,
     horse_collision_response: 0x1D8C9B0,
+    physics_material_params: 0x4896800,
+    rigid_body_params: 0x4454BE0,
+    vehicle_handling_data: 0x56D8090,
 };
 
 pub const QUEUE_PLANE_SUBMIT_SLOT: usize = 0x100;
@@ -239,6 +245,8 @@ mod tests {
         assert_ne!(CURRENT_MANIFEST.gpu_particle_collision_init, 0);
         assert_ne!(CURRENT_MANIFEST.rain_collision_resource, 0);
         assert_ne!(CURRENT_MANIFEST.water_system_state, 0);
+        assert_ne!(CURRENT_MANIFEST.physics_material_params, 0);
+        assert_ne!(CURRENT_MANIFEST.rigid_body_params, 0);
         assert_eq!(LIVE_HOOK_ORDER.len(), 16);
         assert_eq!(LIVE_HOOK_ORDER[0].rva(CURRENT_MANIFEST), CURRENT_MANIFEST.device_init);
         assert_eq!(LIVE_HOOK_ORDER[15].rva(CURRENT_MANIFEST), CURRENT_MANIFEST.bone_hash_map);

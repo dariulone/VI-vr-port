@@ -13,6 +13,43 @@ All physics anchors in this document are also present in the checked-in Rust RVA
 | Xbox BVH helper | `XboxBvhBuilder.dll` import and `bvh_skinning` resources | Ray-tracing acceleration and skinned geometry support exist. This does not prove gameplay collision queries. |
 | Constraint resource names | `0x1426870F0` parses names beginning with `constraint_` and returns the numeric suffix | Constraint records are data-driven. The function is a name/index resolver, not the solver. |
 
+## Direct physics parameter parsing
+
+Two functions expose the clearest rigid-body and contact parameters found in the image.
+
+### Contact and spring material parameters
+
+`0x144896800` reads optional fields from a physics material/config object and stores them in a compact runtime record.
+
+| Config key | Destination offset |
+|---|---:|
+| `friction` | `+0x24` |
+| `elasticity` | `+0x28` |
+| `springconstant` | `+0x30` |
+| `springdamping` | `+0x34` |
+| `rollingfriction` | `+0x38` |
+
+The parser asks the source object for each value through its vtable and leaves the defaults intact when a key is absent. This is a material/contact parameter record. It does not itself integrate impulses or solve contacts.
+
+### Rigid-body mass, inertia, gravity, and buoyancy
+
+`0x144454BE0` reads rigid-body properties and writes a body-state record.
+
+| Config key | Runtime operation |
+|---|---|
+| `mass` or `density` | Computes the body mass and stores it at `+0x4C` |
+| `angInertia` | Reads a vector-like value and combines it with the body state |
+| `inertiaBox` | Converts box inertia into a vector record |
+| `inertiaScale` | Scales the inertia vector |
+| `gravityFactor` | Stores the scalar at `+0x60` |
+| `buoyancyFactor` | Stores the scalar at `+0x6C` |
+
+The parser calls `sub_1453808B0` and dispatches a body update through a vtable method at byte offset `+0x70`. These calls are the strongest static handoff into a rigid-body backend. The actual solver tick, broadphase, contact manifold, and integration step remain unresolved.
+
+### Vehicle handling data
+
+`0x1456D8090` loads `common:/data/ai/DefaultVehicleAiHandlingEntry`. This is a vehicle handling resource path. It should be traced alongside the rigid-body record when investigating vehicle force generation, but it does not prove that handling values are the same structure as physical mass or contact material data.
+
 ## Vehicle physics and deformation
 
 ### Vehicle request system

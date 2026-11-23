@@ -63,6 +63,9 @@ STATIC_TARGETS = [
     ("water_system_helper", 0x2620140),
     ("constraint_name_resolver", 0x26870F0),
     ("horse_collision_response", 0x1D8C9B0),
+    ("physics_material_params", 0x4896800),
+    ("rigid_body_params", 0x4454BE0),
+    ("vehicle_handling_data", 0x56D8090),
 ]
 
 

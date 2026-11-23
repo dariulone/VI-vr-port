@@ -45,6 +45,10 @@ This is a small, purpose-selected list of renderer, camera, culling, skinning, a
 | `water_depthoccluderpass` | `0x14677B5CF` | `0x677B5CF` | water depth pass | `0x1426205C0` |
 | `constraint_` | `0x146786059` | `0x6786059` | constraint index naming | `0x1426870F0` |
 | `Horse Collision Response` | `0x146781E46` | `0x6781E46` | species collision response | `0x141D8C9B0` |
+| `friction:` | `0x14678A303` | `0x68A303` | physics material parameter | `0x1448968E0` |
+| `rollingfriction:` | `0x1467889B2` | `0x6889B2` | physics material parameter | `0x144896800` |
+| `buoyancyFactor:` | `0x146788958` | `0x688958` | rigid-body water parameter | `0x144454BE0` |
+| `common:/data/ai/DefaultVehicleAiHandlingEntry` | `0x1467785ED` | `0x67785ED` | vehicle handling data | `0x1456D8090` |
 
 ## Import labels
 
