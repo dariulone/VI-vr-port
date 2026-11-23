@@ -50,6 +50,21 @@ The safe Rust representation is `gta6-vr-core::RuntimeProbeFrame`. Its validator
     "metadata_flag_offset": 99,
     "aux_blocks": 4
   },
+  "input": {
+    "gameinput_create_rva": "0x5f3fed0",
+    "wrapper_rva": "0x59258a0",
+    "interface_ptr": "0x0",
+    "vtable_ptr": "0x0",
+    "trigger_edge": 0
+  },
+  "weapon": {
+    "event_dispatch_rva": "0x5f34810",
+    "action_id": -1,
+    "phase": -1,
+    "weapon_entity": "0x0",
+    "state_flags": 0,
+    "resource_ptr": "0x0"
+  },
   "physics": {
     "vehicle_deform": "0x0",
     "explosion_vehicle_buffer": "0x0",

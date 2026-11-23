@@ -77,6 +77,9 @@ STATIC_TARGETS = [
     ("body_inertia_accumulator", 0x55B1200),
     ("body_property_initializer", 0x6D9FF0),
     ("vehicle_handling_data", 0x56D8090),
+    ("input_gameinput_create", 0x5F3FED0),
+    ("input_interface_wrapper", 0x59258A0),
+    ("weapon_event_dispatch", 0x5F34810),
 ]
 
 

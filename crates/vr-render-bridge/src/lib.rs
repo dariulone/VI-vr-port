@@ -73,6 +73,9 @@ pub struct RvaManifest {
     pub body_inertia_accumulator: usize,
     pub body_property_initializer: usize,
     pub vehicle_handling_data: usize,
+    pub input_gameinput_create: usize,
+    pub input_interface_wrapper: usize,
+    pub weapon_event_dispatch: usize,
 }
 
 pub const CURRENT_MANIFEST: RvaManifest = RvaManifest {
@@ -146,6 +149,9 @@ pub const CURRENT_MANIFEST: RvaManifest = RvaManifest {
     body_inertia_accumulator: 0x55B1200,
     body_property_initializer: 0x6D9FF0,
     vehicle_handling_data: 0x56D8090,
+    input_gameinput_create: 0x5F3FED0,
+    input_interface_wrapper: 0x59258A0,
+    weapon_event_dispatch: 0x5F34810,
 };
 
 pub const QUEUE_PLANE_SUBMIT_SLOT: usize = 0x100;
@@ -279,6 +285,9 @@ mod tests {
         assert_ne!(CURRENT_MANIFEST.body_weighted_center, 0);
         assert_ne!(CURRENT_MANIFEST.body_inertia_accumulator, 0);
         assert_ne!(CURRENT_MANIFEST.body_property_initializer, 0);
+        assert_ne!(CURRENT_MANIFEST.input_gameinput_create, 0);
+        assert_ne!(CURRENT_MANIFEST.input_interface_wrapper, 0);
+        assert_ne!(CURRENT_MANIFEST.weapon_event_dispatch, 0);
         assert_eq!(LIVE_HOOK_ORDER.len(), 16);
         assert_eq!(LIVE_HOOK_ORDER[0].rva(CURRENT_MANIFEST), CURRENT_MANIFEST.device_init);
         assert_eq!(LIVE_HOOK_ORDER[15].rva(CURRENT_MANIFEST), CURRENT_MANIFEST.bone_hash_map);

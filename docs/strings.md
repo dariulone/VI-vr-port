@@ -65,6 +65,12 @@ This is a small, purpose-selected list of renderer, camera, culling, skinning, a
 | `angularV:` | `0x146788B07` | `0x6788B07` | damping coefficient | `0x144455000` |
 | `angularV2:` | `0x146788B81` | `0x6788B81` | damping coefficient | `0x144455000` |
 | `gravityFactor:` | `0x146788949` | `0x6788949` | rigid-body gravity parameter | `0x144454BE0` |
+| `willTrigger` | `0x14677E018` | `0x677E018` | weapon/input trigger metadata | `0x144D6FDB0` |
+| `TriggerType` | `0x1467824E3` | `0x67824E3` | weapon event metadata | `0x142630330`, `0x142635A40`, `0x1459606F0` |
+| `TriggerSubType` | `0x146782626` | `0x6782626` | weapon event metadata | `0x142630330` |
+| `Wpn_LOC_Projectile` | `0x146782DC4` | `0x6782DC4` | projectile socket/resource name | `0x145B20870` |
+| `MISSLE_FIRED` | `0x146788028` | `0x6788028` | missile event table label | `0x1458FD140` |
+| `sfIsWeaponReady` | `0x1467787C4` | `0x67787C4` | weapon readiness UI state | `0x141F69F10` |
 
 ## Import labels
 

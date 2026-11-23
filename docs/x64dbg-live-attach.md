@@ -39,6 +39,9 @@ This is a read-only attach order for the first translated process. It assumes th
 | 31 | `0x55B1160` | Weighted center accumulation | per-shape weights, total weight, normalized center vector |
 | 32 | `0x55B1200` | Inertia or second-moment accumulation | center-relative shape vectors and weighted quadratic terms |
 | 33 | `0x6D9FF0` | Body property initializer | shape count, center/inertia aggregates, mass and buoyancy accumulation |
+| 34 | `0x5F3FED0` | GameInput interface creation | returned input object and vtable pointer |
+| 35 | `0x59258A0` | GameInput wrapper | interface replacement, initialization calls, stored global pointer |
+| 36 | `0x5F34810` | Weapon event dispatcher | `action_id`, `phase`, weapon state flags, resource pointer |
 
 ## First capture sequence
 

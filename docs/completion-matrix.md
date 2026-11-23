@@ -16,7 +16,7 @@ This matrix is the current audit of the requested preparation work. A runtime it
 | Physics resources | Vehicle deform, explosion damage, GPU particles, rain, water, constraints, horse response | Verified statically, solver/contact ABI runtime gate open |
 | OpenXR frame coordination | `gta6-vr-openxr` coordinator and two-eye tests | Unit-tested |
 | Version and hook gating | `manifest_matches`, `LIVE_HOOK_ORDER`, image base and SHA-256 | Unit-tested |
-| Static harness and strings | 21 targets with xrefs, 80 selected strings, 40 render candidates | Verified on the current IDA database |
+| Static harness and strings | 53 targets with xrefs, 80 selected strings, 40 render candidates | Verified on the current IDA database |
 | Runtime trace schema | `RuntimeProbeFrame`, bounded JSON schema, x64dbg attach map | Unit-tested and documented |
 | External boot trigger | Public repositories currently report no playable boot | Pending external state |
 
