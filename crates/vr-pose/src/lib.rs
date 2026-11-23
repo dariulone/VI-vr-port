@@ -4,6 +4,7 @@ pub const POSE_RECORD_STRIDE: usize = 0x80;
 pub const POSE_METADATA_FLAG_OFFSET: usize = 0x63;
 pub const POSE_AUX_BLOCK_COUNT: usize = 4;
 
+#[repr(C)]
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct PoseRecord128 {
     pub bytes: [u8; POSE_RECORD_STRIDE],
@@ -41,6 +42,7 @@ impl PoseBuffer {
     }
 }
 
+#[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct TwoBoneTarget {
     pub shoulder: [f32; 3],

@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+#[repr(C)]
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct RvaManifest {
     pub device_init: usize,
@@ -74,6 +75,7 @@ pub const CURRENT_MANIFEST: RvaManifest = RvaManifest {
 pub const QUEUE_PLANE_SUBMIT_SLOT: usize = 0x100;
 pub const QUEUE_BATCH_SUBMIT_SLOT: usize = 0x118;
 
+#[repr(u8)]
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum PresentPath {
     Unknown,

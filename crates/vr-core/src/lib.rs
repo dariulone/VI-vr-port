@@ -1,11 +1,13 @@
 #![forbid(unsafe_code)]
 
+#[repr(u8)]
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Eye {
     Left,
     Right,
 }
 
+#[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct EyeFov {
     pub left: f32,
@@ -14,6 +16,7 @@ pub struct EyeFov {
     pub down: f32,
 }
 
+#[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct EyePacket {
     pub frame_id: u64,
@@ -27,6 +30,7 @@ pub struct EyePacket {
     pub image_handle: u64,
 }
 
+#[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct FrustumBounds {
     pub left: f32,
@@ -64,12 +68,14 @@ pub fn projection_from_tangents(fov: EyeFov, near_z: f32, far_z: f32) -> [[f32; 
     ]
 }
 
+#[repr(u8)]
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum AimMode {
     Camera,
     Muzzle,
 }
 
+#[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct AimPacket {
     pub frame_id: u64,
