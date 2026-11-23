@@ -109,24 +109,28 @@ pub enum HookTarget {
     CameraPacketCopy = 3,
     FrustumPrepare = 4,
     FrustumShapeMath = 5,
-    FrustumRangeDispatch = 6,
-    InstanceCullingDispatch = 7,
-    Worker = 8,
-    PresentCore = 9,
-    PresentLifecycle = 10,
-    PoseCopy = 11,
-    PoseFinalize = 12,
-    BoneHashMap = 13,
+    FrustumResourceDispatch = 6,
+    FrustumRangeDispatch = 7,
+    FrustumRangeProcess = 8,
+    InstanceCullingDispatch = 9,
+    Worker = 10,
+    PresentCore = 11,
+    PresentLifecycle = 12,
+    PoseCopy = 13,
+    PoseFinalize = 14,
+    BoneHashMap = 15,
 }
 
-pub const LIVE_HOOK_ORDER: [HookTarget; 14] = [
+pub const LIVE_HOOK_ORDER: [HookTarget; 16] = [
     HookTarget::DeviceInit,
     HookTarget::CameraOwnerTick,
     HookTarget::CameraRenderPrepare,
     HookTarget::CameraPacketCopy,
     HookTarget::FrustumPrepare,
     HookTarget::FrustumShapeMath,
+    HookTarget::FrustumResourceDispatch,
     HookTarget::FrustumRangeDispatch,
+    HookTarget::FrustumRangeProcess,
     HookTarget::InstanceCullingDispatch,
     HookTarget::Worker,
     HookTarget::PresentCore,
@@ -145,7 +149,9 @@ impl HookTarget {
             Self::CameraPacketCopy => manifest.camera_packet_copy,
             Self::FrustumPrepare => manifest.camera_frustum_prepare,
             Self::FrustumShapeMath => manifest.camera_frustum_shape_math,
+            Self::FrustumResourceDispatch => manifest.frustum_resource_dispatch,
             Self::FrustumRangeDispatch => manifest.frustum_range_dispatch,
+            Self::FrustumRangeProcess => manifest.frustum_range_process,
             Self::InstanceCullingDispatch => manifest.instance_culling_dispatch,
             Self::Worker => manifest.worker,
             Self::PresentCore => manifest.present_core,
@@ -197,7 +203,7 @@ mod tests {
         assert_ne!(CURRENT_MANIFEST.pose_finalize, 0);
         assert_ne!(CURRENT_MANIFEST.pose_aux_array_build, 0);
         assert_ne!(CURRENT_MANIFEST.projectile_location, 0);
-        assert_eq!(LIVE_HOOK_ORDER.len(), 14);
+        assert_eq!(LIVE_HOOK_ORDER.len(), 16);
         assert_eq!(LIVE_HOOK_ORDER[0].rva(CURRENT_MANIFEST), CURRENT_MANIFEST.device_init);
         assert_eq!(LIVE_HOOK_ORDER[13].rva(CURRENT_MANIFEST), CURRENT_MANIFEST.bone_hash_map);
         assert_eq!(present_path(), PresentPath::XboxPlaneSubmission);
