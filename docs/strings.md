@@ -27,6 +27,11 @@ This is a small, purpose-selected list of renderer, camera, culling, skinning, a
 | `MotionMatcherStore` | `0x146782158` | `0x6782158` | motion matching | `0x145B40DF0` |
 | `PoseMatcherStore` | `0x14678216B` | `0x678216B` | pose matching | `0x145B92B00` |
 | `common:/data/ai/PedMotionData` | `0x146785DF7` | `0x6785DF7` | ped motion metadata | `0x14598AAE0` |
+| `PrecisionAimContext` | `0x1467798EB` | `0x67798EB` | weapon aim context | `0x140F1B130`, `0x144ACB720` |
+| `Muzzle` | `0x146782BE8` | `0x6782BE8` | weapon component | `0x141D1BBF0` |
+| `Wpn_LOC_Projectile` | `0x146782DC4` | `0x6782DC4` | projectile location | `0x145B20870` |
+| `sfIsAiming` | `0x146781117` | `0x6781117` | reticle and aim UI | `0x141F69F10` |
+| `MISSLE_FIRED` | `0x146788028` | `0x6788028` | missile event | `0x1458FD140` |
 
 ## Import labels
 
