@@ -99,3 +99,14 @@ The pose handoff is now located. The per-ped render update is at 0x1435B3B30, wi
 The pose copy function at 0x14523B680 reads the count at source offset +0x0C, copies records from +0x10, and uses a 0x80-byte stride per bone. The hash mapper at 0x14523C6F0 reads one bone hash per index, resolves it through 0x144DAAFC0, and copies four 32-byte vector blocks into the render-facing arrays.
 
 The recommended VRIK write boundary is the local parent-relative pose block immediately before 0x14523C6F0. This keeps the existing hash map, metadata finalizer, and ped_skinning_cs path intact.
+
+## Auxiliary arrays and metadata validation
+
+The finalizer has a second data path that matters for a safe VRIK write.
+
+- `0x14523C690` invokes `0x14523C6F0` four times with source and destination offsets `0`, `+0x10`, `+0x20`, and `+0x30`, selecting auxiliary block indices `0` through `3`.
+- Each `0x14523C6F0` call reads the pose count from `a2 + 0x0C`, resolves one 32-bit bone hash per index through `0x144DAAFC0`, and writes the resolved record data into a block-specific render array.
+- When a pose object is present, `0x14523BD00` builds those arrays at `a1 + 0x880`, calls `0x14523C810`, and then copies an auxiliary validity value at `+0x0C` into the metadata record at `a1 + 0x300 + 0x63` for each bone. The metadata stride is `0x80` bytes.
+- When the pose object is absent, `0x14523BD00` recomputes the same validity bytes with SIMD range checks. It does not synthesize a replacement pose.
+
+The solver should therefore preserve the auxiliary-array and metadata path. A live trace should record the pose count, the four auxiliary destinations, the metadata byte at `+0x63`, and the hash-resolved source record before enabling a hand or head override.

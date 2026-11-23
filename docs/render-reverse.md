@@ -223,6 +223,8 @@ sub_14523C6F0 rebuilds the GPU or render-facing bone map.
 
 This is the first proven hash-to-pose mapping point. A VRIK override should target the source pose records before sub_14523C6F0, then allow the existing hash map and skinning builder to continue.
 
+sub_14523C690 calls the mapper four times at 16-byte offsets `0`, `+0x10`, `+0x20`, and `+0x30`. The finalizer at sub_14523BD00 uses the resulting auxiliary arrays to update the per-bone metadata byte at `+0x63` in each `0x80`-byte record. This metadata step is part of the pose contract and should remain intact when the VRIK solver changes local transforms.
+
 ## Pose finalization
 
 sub_14523BD00 finalizes the pose object before the draw-resource builder.

@@ -31,6 +31,8 @@ meshlet_culling_init = "0x5b03cb0"
 pose_source = "0x523b630"
 pose_copy = "0x523b680"
 pose_finalize = "0x523bd00"
+pose_aux_array_build = "0x523c690"
+pose_gate_update = "0x523c810"
 bone_hash_map = "0x523c6f0"
 skinning_record_builder = "0x27c15a0"
 

@@ -26,6 +26,8 @@ pub struct RvaManifest {
     pub pose_source: usize,
     pub pose_copy: usize,
     pub pose_finalize: usize,
+    pub pose_aux_array_build: usize,
+    pub pose_gate_update: usize,
     pub bone_hash_map: usize,
     pub skinning_record_builder: usize,
     pub precision_context: usize,
@@ -59,6 +61,8 @@ pub const CURRENT_MANIFEST: RvaManifest = RvaManifest {
     pose_source: 0x523B630,
     pose_copy: 0x523B680,
     pose_finalize: 0x523BD00,
+    pose_aux_array_build: 0x523C690,
+    pose_gate_update: 0x523C810,
     bone_hash_map: 0x523C6F0,
     skinning_record_builder: 0x27C15A0,
     precision_context: 0xF1B130,
@@ -94,6 +98,7 @@ mod tests {
         assert_eq!(QUEUE_PLANE_SUBMIT_SLOT, 0x100);
         assert_eq!(QUEUE_BATCH_SUBMIT_SLOT, 0x118);
         assert_ne!(CURRENT_MANIFEST.pose_finalize, 0);
+        assert_ne!(CURRENT_MANIFEST.pose_aux_array_build, 0);
         assert_ne!(CURRENT_MANIFEST.projectile_location, 0);
         assert_eq!(present_path(), PresentPath::XboxPlaneSubmission);
     }
