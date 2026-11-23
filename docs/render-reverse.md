@@ -68,6 +68,8 @@ sub_1424827C0 converts timing and placement values into integer source and desti
 
 sub_1424826A0 rotates four presentation slots in qword_1475DF270 and qword_1468919E0. It calls the device at byte offset 0x288 with a 69888-byte presentation payload and then schedules frame events through sub_140A1C290. This is the strongest presentation-core boundary.
 
+The device call at `+0x288` returns a completion count and a temporary array of 56-byte records. The core walks that array and schedules event `10` for records with type `0x10000`, or event `9` for type `0x10000`-compatible records with the zero flag. This completion record is the first static evidence that the host presenter can report work after the payload call. Capture the returned count, record type, token, and the four-slot index together with the queue submission.
+
 sub_1424828B0 updates frame-pacing history for the same four-slot ring. It adjusts the pacing origin, records the display interval, and calls sub_1424829E0.
 
 The native stereo bridge should target this path after it can provide two eye resources. The current worker supports a plane count, but it does not prove that a single plane can carry two array views. The first implementation should expose two explicit eye resources and preserve the original plane and token contracts.
@@ -82,6 +84,8 @@ sub_142484180 is the frame-level presentation wrapper.
 4. Selects one qword_1475DE4B0 record by the current frame slot.
 5. Calls sub_1424826A0 with the selected presentation record and the active queue token.
 6. Finishes the frame through sub_1424844D0.
+
+The wrapper also clears a 128-byte frame scratch area selected by `frame_counter & 1`, updates the display interval through the runtime context, schedules event `7`, selects the active 144-byte presentation record, and calls `0x1424826A0`. `0x1424844D0` stores the active token and frame counter in a small event record before forwarding it to the runtime event helper.
 
 sub_1424844D0 stores the active frame event state and calls the device context with an event payload. The corresponding release path polls Windows messages, schedules frame-event id 8, and releases the queue-side resources.
 
