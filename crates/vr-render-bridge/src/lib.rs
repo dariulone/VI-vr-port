@@ -92,6 +92,13 @@ pub const CURRENT_MANIFEST: RvaManifest = RvaManifest {
 
 pub const QUEUE_PLANE_SUBMIT_SLOT: usize = 0x100;
 pub const QUEUE_BATCH_SUBMIT_SLOT: usize = 0x118;
+pub const EXPECTED_IMAGE_BASE: usize = 0x140000000;
+pub const EXPECTED_INPUT_SHA256: &str =
+    "E95020B2FA4A721DB3DF59FDECF75621730AC559D8835252F6C3B658D5A08993";
+
+pub fn manifest_matches(image_base: usize, input_sha256: &str) -> bool {
+    image_base == EXPECTED_IMAGE_BASE && input_sha256.eq_ignore_ascii_case(EXPECTED_INPUT_SHA256)
+}
 
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -182,6 +189,11 @@ mod tests {
         assert_ne!(CURRENT_MANIFEST.pose_gate_update, 0);
         assert_eq!(QUEUE_PLANE_SUBMIT_SLOT, 0x100);
         assert_eq!(QUEUE_BATCH_SUBMIT_SLOT, 0x118);
+        assert!(manifest_matches(
+            EXPECTED_IMAGE_BASE,
+            EXPECTED_INPUT_SHA256
+        ));
+        assert!(!manifest_matches(EXPECTED_IMAGE_BASE + 0x1000, EXPECTED_INPUT_SHA256));
         assert_ne!(CURRENT_MANIFEST.pose_finalize, 0);
         assert_ne!(CURRENT_MANIFEST.pose_aux_array_build, 0);
         assert_ne!(CURRENT_MANIFEST.projectile_location, 0);

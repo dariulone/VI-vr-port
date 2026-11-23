@@ -162,6 +162,8 @@ The bridge exposes the two worker queue slots as constants. `QUEUE_BATCH_SUBMIT_
 
 `LIVE_HOOK_ORDER` mirrors the x64dbg attach sequence in typed Rust form. Each `HookTarget` resolves through `RvaManifest`, so version checks can reject the full plan before any hook is installed.
 
+The bridge also exposes `manifest_matches`, which checks the expected image base and input SHA-256 before the live plan is accepted.
+
 ## Asymmetric projection
 
 OpenXR supplies per-eye tangents. Keep the pure math in vr-core.
