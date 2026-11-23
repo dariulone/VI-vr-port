@@ -9,6 +9,7 @@ The repository contains derived facts, RVAs, curated technical strings, and auth
 - IDA Pro 9.2 database created for the analyzed x64 image
 - Native graphics initialization located
 - Camera state and view-update candidates located
+- Camera render packet, visibility, frustum, and culling boundaries mapped
 - Instance, meshlet, portal-stencil, and skinning paths located
 - OpenXR, OpenVR, and SteamVR imports or strings were not found
 - Native stereo presenter and runtime tracing remain to be implemented
@@ -29,7 +30,8 @@ The repository contains derived facts, RVAs, curated technical strings, and auth
 11. [Weapon aim](docs/weapon-aim.md)
 12. [Boot-day checklist](docs/boot-day-checklist.md)
 13. [Rust RVA manifest](docs/rust-rva-manifest.toml)
-14. [Rust workspace](crates/vr-core/src/lib.rs)
+14. [IDA static harness](docs/ida-harness.md)
+15. [Rust workspace](crates/vr-core/src/lib.rs)
 
 ## Analysis identity
 
