@@ -80,7 +80,7 @@ Two adjacent functions provide a stronger static culling candidate.
 
 The SIMD operations include cross-product-like shuffles, normalization, min/max plane construction, and reciprocal-length correction. This is the best static frustum or visibility-shape candidate found so far. It is still distinct from a proven GPU projection constant upload. The first runtime trace should capture its input packet and the generated plane vectors before the instance-culling dispatch.
 
-After the vector generation, trace the resource wrapper at `0x14559A400` and the flag-based dispatch at `0x144E29640`. Record the resource flags, selected method, and completion callback. This is the shortest static-to-runtime path currently available for locating the GPU buffer or descriptor that consumes the frustum packet.
+After the vector generation, trace the resource wrapper at `0x14559A400` and the flag-based dispatch at `0x144E29640`. The selected `0x144E296B0` stage computes an interval or intersection against `a2 + 0x20D0`, then updates a sorted 16-byte range list at `a2 + 192`, `+196`, and `+200`. This is CPU visibility preparation. The GPU buffer or descriptor must be traced after this list is consumed.
 
 ## Culling
 
