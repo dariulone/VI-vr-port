@@ -160,6 +160,8 @@ The camera render-object handoff is included as `camera_owner_tick`, `camera_ren
 
 The bridge exposes the two worker queue slots as constants. `QUEUE_BATCH_SUBMIT_SLOT` is `0x118` for command or resource batches, and `QUEUE_PLANE_SUBMIT_SLOT` is `0x100` for presentation descriptors.
 
+`LIVE_HOOK_ORDER` mirrors the x64dbg attach sequence in typed Rust form. Each `HookTarget` resolves through `RvaManifest`, so version checks can reject the full plan before any hook is installed.
+
 ## Asymmetric projection
 
 OpenXR supplies per-eye tangents. Keep the pure math in vr-core.

@@ -95,6 +95,63 @@ pub const QUEUE_BATCH_SUBMIT_SLOT: usize = 0x118;
 
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum HookTarget {
+    DeviceInit = 0,
+    CameraOwnerTick = 1,
+    CameraRenderPrepare = 2,
+    CameraPacketCopy = 3,
+    FrustumPrepare = 4,
+    FrustumShapeMath = 5,
+    FrustumRangeDispatch = 6,
+    InstanceCullingDispatch = 7,
+    Worker = 8,
+    PresentCore = 9,
+    PresentLifecycle = 10,
+    PoseCopy = 11,
+    PoseFinalize = 12,
+    BoneHashMap = 13,
+}
+
+pub const LIVE_HOOK_ORDER: [HookTarget; 14] = [
+    HookTarget::DeviceInit,
+    HookTarget::CameraOwnerTick,
+    HookTarget::CameraRenderPrepare,
+    HookTarget::CameraPacketCopy,
+    HookTarget::FrustumPrepare,
+    HookTarget::FrustumShapeMath,
+    HookTarget::FrustumRangeDispatch,
+    HookTarget::InstanceCullingDispatch,
+    HookTarget::Worker,
+    HookTarget::PresentCore,
+    HookTarget::PresentLifecycle,
+    HookTarget::PoseCopy,
+    HookTarget::PoseFinalize,
+    HookTarget::BoneHashMap,
+];
+
+impl HookTarget {
+    pub const fn rva(self, manifest: RvaManifest) -> usize {
+        match self {
+            Self::DeviceInit => manifest.device_init,
+            Self::CameraOwnerTick => manifest.camera_owner_tick,
+            Self::CameraRenderPrepare => manifest.camera_render_prepare,
+            Self::CameraPacketCopy => manifest.camera_packet_copy,
+            Self::FrustumPrepare => manifest.camera_frustum_prepare,
+            Self::FrustumShapeMath => manifest.camera_frustum_shape_math,
+            Self::FrustumRangeDispatch => manifest.frustum_range_dispatch,
+            Self::InstanceCullingDispatch => manifest.instance_culling_dispatch,
+            Self::Worker => manifest.worker,
+            Self::PresentCore => manifest.present_core,
+            Self::PresentLifecycle => manifest.present_lifecycle,
+            Self::PoseCopy => manifest.pose_copy,
+            Self::PoseFinalize => manifest.pose_finalize,
+            Self::BoneHashMap => manifest.bone_hash_map,
+        }
+    }
+}
+
+#[repr(u8)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum PresentPath {
     Unknown,
     XboxPlaneSubmission,
@@ -128,6 +185,9 @@ mod tests {
         assert_ne!(CURRENT_MANIFEST.pose_finalize, 0);
         assert_ne!(CURRENT_MANIFEST.pose_aux_array_build, 0);
         assert_ne!(CURRENT_MANIFEST.projectile_location, 0);
+        assert_eq!(LIVE_HOOK_ORDER.len(), 14);
+        assert_eq!(LIVE_HOOK_ORDER[0].rva(CURRENT_MANIFEST), CURRENT_MANIFEST.device_init);
+        assert_eq!(LIVE_HOOK_ORDER[13].rva(CURRENT_MANIFEST), CURRENT_MANIFEST.bone_hash_map);
         assert_eq!(present_path(), PresentPath::XboxPlaneSubmission);
     }
 }
