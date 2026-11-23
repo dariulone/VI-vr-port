@@ -26,6 +26,31 @@ import idc
 DEFAULT_OUT = os.path.join(os.getcwd(), "vr_static_report")
 
 
+STATIC_TARGETS = [
+    ("device_init", 0x2478440),
+    ("frame_begin", 0x41E9E0),
+    ("worker", 0x2481E90),
+    ("present_lifecycle", 0x2484180),
+    ("present_core", 0x24826A0),
+    ("camera_owner_tick", 0x2008AE0),
+    ("camera_render_prepare", 0x3231B30),
+    ("camera_packet_copy", 0x53159B0),
+    ("camera_visibility_consumer", 0x31B0B0),
+    ("camera_frustum_prepare", 0x4128B0),
+    ("camera_frustum_shape_math", 0x4440C60),
+    ("frustum_resource_dispatch", 0x4E29640),
+    ("frustum_range_dispatch", 0x4E296B0),
+    ("frustum_range_process", 0x2DAB0),
+    ("instance_culling_dispatch", 0x25D8590),
+    ("pose_source", 0x523B630),
+    ("pose_copy", 0x523B680),
+    ("pose_finalize", 0x523BD00),
+    ("pose_aux_array_build", 0x523C690),
+    ("pose_gate_update", 0x523C810),
+    ("bone_hash_map", 0x523C6F0),
+]
+
+
 def output_dir():
     env_out = os.environ.get("VR_STATIC_HARNESS_OUT")
     if env_out:
@@ -115,6 +140,25 @@ def imported_candidates(imports, patterns):
     return sorted(candidates.values(), key=lambda value: (value["name"], value["ea"]))
 
 
+def static_target_records():
+    imagebase = idaapi.get_imagebase()
+    rows = []
+    for role, rva in STATIC_TARGETS:
+        ea = imagebase + rva
+        refs = []
+        for ref in idautils.XrefsTo(ea, 0):
+            caller = ida_funcs.get_func(ref.frm)
+            refs.append(function_record(caller.start_ea if caller else ref.frm))
+        rows.append({
+            "role": role,
+            "ea": hex(ea),
+            "rva": hex(rva),
+            "function": function_record(ea),
+            "xrefs": refs[:80],
+        })
+    return rows
+
+
 def report_markdown(report):
     lines = [
         "# Static VR-oriented report",
@@ -127,6 +171,12 @@ def report_markdown(report):
     ]
     for item in report["render_candidates"]:
         lines.append(f"- `{item['ea']}` `{item['name']}` hits {', '.join(item['hits'])}")
+    lines.extend(["", "## Static VR target inventory", ""])
+    for item in report["static_targets"]:
+        function = item["function"]
+        lines.append(f"- `{item['role']}` RVA `{item['rva']}` `{function['name']}` xrefs {len(item['xrefs'])}")
+        for caller in item["xrefs"][:6]:
+            lines.append(f"  - xref `{caller['rva']}` `{caller['name']}`")
     lines.extend(["", "## Relevant strings", ""])
     for item in report["strings"]:
         lines.append(f"- `{item['rva']}` `{item['text']}`")
@@ -148,6 +198,7 @@ def main():
         r"d3d12", r"xg_xs", r"xmem", r"xapu", r"chad",
     ])
     imports = import_records()
+    static_targets = static_target_records()
     render_candidates = imported_candidates(imports, [
         r"d3d12", r"present", r"swap", r"xg_xs", r"xmem", r"xapu", r"chad", r"gameinput",
     ])
@@ -157,6 +208,7 @@ def main():
         "function_count": sum(1 for _ in idautils.Functions()),
         "imports": imports,
         "render_candidates": render_candidates,
+        "static_targets": static_targets,
         "strings": strings,
     }
     json_path = os.path.join(output, "vr_static_report.json")
@@ -170,6 +222,7 @@ def main():
     print("VR_STATIC_FUNCTIONS", report["function_count"])
     print("VR_STATIC_IMPORT_MODULES", len(imports))
     print("VR_STATIC_CANDIDATES", len(render_candidates))
+    print("VR_STATIC_TARGETS", len(static_targets))
     print("VR_STATIC_STRINGS", len(strings))
 
 
