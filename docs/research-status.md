@@ -11,6 +11,7 @@
 - The camera render-object packet now has a downstream AABB consumer at `0x14031B0B0` and a frustum/visibility-shape path at `0x1404128B0 → 0x144440C60`.
 - The read-only IDA harness has been verified against the current database and exports 21 static VR targets with xrefs.
 - The Rust runtime probe frame validator covers the observed queue and presentation invariants.
+- The Rust OpenXR frame coordinator, version gate, and typed live hook order are implemented and unit-tested.
 - The executable has no OpenXR, OpenVR, or SteamVR import or string.
 - A curated technical string table is available in [strings.md](strings.md).
 
