@@ -13,6 +13,8 @@ All physics anchors in this document are also present in the checked-in Rust RVA
 | Xbox BVH helper | `XboxBvhBuilder.dll` import and `bvh_skinning` resources | Ray-tracing acceleration and skinned geometry support exist. This does not prove gameplay collision queries. |
 | Constraint resource names | `0x1426870F0` parses names beginning with `constraint_` and returns the numeric suffix | Constraint records are data-driven. The function is a name/index resolver, not the solver. |
 
+The string search also found no gameplay-facing `contact`, `broadphase`, `solver`, or `ragdoll` names. The remaining collision-labelled strings are the rain, GPU-particle, horse-response, and unrelated platform or audio paths listed below. This makes call-chain and object-state tracing more important than name-based discovery for the unresolved solver boundary.
+
 ## Direct physics parameter parsing
 
 Two functions expose the clearest rigid-body and contact parameters found in the image.
