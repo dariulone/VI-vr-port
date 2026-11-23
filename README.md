@@ -31,7 +31,8 @@ The repository contains derived facts, RVAs, curated technical strings, and auth
 12. [Boot-day checklist](docs/boot-day-checklist.md)
 13. [Rust RVA manifest](docs/rust-rva-manifest.toml)
 14. [IDA static harness](docs/ida-harness.md)
-15. [Rust workspace](crates/vr-core/src/lib.rs)
+15. [Runtime probe schema](docs/runtime-probe-schema.md)
+16. [Rust workspace](crates/vr-core/src/lib.rs)
 
 ## Analysis identity
 

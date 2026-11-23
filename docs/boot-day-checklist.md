@@ -2,6 +2,8 @@
 
 This is the shortest path from a confirmed translated boot to a native stereo smoke frame. The checklist assumes the executable is available locally and the translation runtime has a documented launch command.
 
+Write each captured frame using the bounded record in [runtime-probe-schema.md](runtime-probe-schema.md).
+
 ## Before launch
 
 - Record the translation-runtime commit and local binary hash.
