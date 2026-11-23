@@ -1,0 +1,32 @@
+# Static adapter targets for the first local Rust smoke build.
+# All addresses are image-relative RVAs.
+
+[binary]
+image_base = "0x140000000"
+
+[render]
+device_init = "0x2478440"
+frame_begin = "0x41e9e0"
+worker = "0x2481e90"
+queue_execute_or_sync = "0x2482660"
+present_lifecycle = "0x2484180"
+present_core = "0x24826a0"
+camera_output_builder = "0x322f5d0"
+camera_output_finalizer = "0x322f8d0"
+camera_view_update = "0x3230750"
+camera_clip_update = "0x32307f0"
+
+[pose]
+pose_source = "0x523b630"
+pose_copy = "0x523b680"
+pose_finalize = "0x523bd00"
+bone_hash_map = "0x523c6f0"
+skinning_record_builder = "0x27c15a0"
+
+[aim]
+precision_context = "0xf1b130"
+precision_context_update = "0x4acb720"
+weapon_components = "0x1d1bbf0"
+projectile_location = "0x5b20870"
+reticle_state = "0x1f69f10"
+missile_event_table = "0x58fd140"
