@@ -11,3 +11,5 @@ Its output is used to maintain the derived findings in this repository.
 The harness is static-only. It enumerates imports, selected strings, cross-references, render candidates, and the checked-in camera, frustum, culling, presentation, pose, and bone-map target inventory. It does not patch or execute the binary.
 
 The target inventory uses image-relative RVAs and includes xrefs for each entry. Generated reports therefore provide a ready-made review list for the first live trace while keeping the executable and generated report private.
+
+The harness was verified against the current IDA database. It reported 434,462 functions, 68 import modules, 40 render candidates, 21 static VR targets, and 80 selected technical strings. The generated JSON and Markdown files remain in the private analysis workspace.
