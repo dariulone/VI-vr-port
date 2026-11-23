@@ -18,9 +18,9 @@
 
 ## Unresolved
 
-- Exact final present method and swapchain or image handoff
+- Exact PresentX ABI signature and host swapchain or image handoff
 - Exact view and projection constant-buffer upload
-- CPU pose buffer address and per-frame bone stride
+- Source pose producer and the semantic layout of the four mapped vector blocks
 - Per-eye treatment of temporal, mirror, portal, and screen-space passes
 - Proof that the translated runtime can boot this executable
 

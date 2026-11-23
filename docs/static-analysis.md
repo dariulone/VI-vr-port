@@ -103,11 +103,11 @@ The image initializes named render subsystems.
 2. The image has no built-in OpenXR bridge.
 3. A native stereo port needs a host presenter, per-eye view and projection constants, stereo-aware visibility, and a compositor submission path.
 4. The camera object and the skinning compute setup are statically located.
-5. The CPU pose write and the final frame-present call still need runtime tracing.
+5. The PresentX ABI signature, camera constant upload, and source pose producer still need runtime tracing.
 
 ## New render and pose evidence
 
-The graphics worker path is now separated from initialization. 0x145CABA60 registers 0x142481E90 as a worker callback. The worker drains eight-lane command queues and calls 0x142482660 at command or resource boundaries. 0x142482660 invokes a context vtable method at byte offset 0x118 with an entry from qword_1475E7300. This is the strongest submission or synchronization candidate and needs a live frame to distinguish queue execution from host presentation.
+The graphics worker path is now separated from initialization. 0x145CABA60 registers 0x142481E90 as a worker callback. The worker drains eight-lane command queues, submits plane arrays through queue vtable byte offset 0x100, and calls 0x142482660 at command or resource boundaries. 0x142484180 selects the presentation slot and calls 0x1424826A0. The exact PresentX ABI signature still needs a live frame.
 
 The per-ped render update at 0x1435B3B30 calls pose finalization at 0x14523BD00 and then builds skinning draw records through 0x1427C15A0. A second owner path at 0x1403ADF90 reaches the same pose finalizer.
 

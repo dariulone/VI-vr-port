@@ -72,17 +72,17 @@ Use a per-avatar calibration record.
 
 The calibration must be recomputed when the player model changes. A fixed offset table is unsafe across the measured skeleton classes.
 
-## Where the bone write is still missing
+## Runtime validation still needed
 
-The static pass has located the skinning consumer and pose matcher setup. It has not proven the CPU or translated-runtime function that writes the per-frame local bone transforms. The next search should trace:
+The static pass has proven the pose handoff and the render-facing bone map. Runtime tracing is still needed to identify the producer of the source pose block and confirm the meaning of each 32-byte vector block. The next trace should watch:
 
-1. The resource or buffer bound to `ped_skinning_cs`
-2. Uploads into that buffer before the compute dispatch
-3. Calls that consume animation track types for rotation and translation
-4. The player-only pose object after motion matching
+1. The source pose object returned by `sub_14523B630`
+2. The caller that produces the local-player pose before `sub_14523B680`
+3. The four vector blocks returned by `sub_144DAAFC0`
+4. The resource bound to `ped_skinning_cs`
 5. The attachment update that consumes `SKEL_L_Hand` and `SKEL_R_Hand`
 
-A successful trace should identify a pose buffer address, stride, bone count, and the handoff from animation to skinning. Only then should the VRIK solver write live transforms.
+A successful trace should confirm the source producer, vector semantics, and ownership rules before enabling live VRIK writes.
 
 ## VRIK validation
 
