@@ -21,6 +21,14 @@ This is a read-only attach order for the first translated process. It assumes th
 | 13 | `0x523B680` | Pose copy | source/destination, count `+0x0C`, `0x80` stride |
 | 14 | `0x523BD00` | Pose finalization | auxiliary destinations, metadata byte `+0x63`, gated state |
 | 15 | `0x523C6F0` | Bone hash mapping | hash, resolved record, four auxiliary block indices |
+| 16 | `0xCBF1F0` | Vehicle deform resource | resource handle, buffer handles, 32-slot staging table |
+| 17 | `0x2511AB0` | Explosion damage buffers | vehicle/ped buffer handles and allocation sizes |
+| 18 | `0x1AF3BA0` | GPU particle collision registration | collision job handle and dispatch table |
+| 19 | `0x1D87EF0` | Rain collision resource | weather owner, rain descriptor, persistent resource |
+| 20 | `0x1E490F0` | Water simulation target | compressed simulation target and water settings |
+| 21 | `0x26205C0` | Water system state | mode code, height/depth resources, pass handles |
+| 22 | `0x26870F0` | Constraint name resolver | `constraint_XX` name and resolved index |
+| 23 | `0x1D8C9B0` | Horse collision response | response record and resource vtable |
 
 ## First capture sequence
 
@@ -29,6 +37,7 @@ This is a read-only attach order for the first translated process. It assumes th
 3. Capture one pose update through order `13` to `15` without changing pose bytes.
 4. Compare the camera packet, frustum range list, culling count, plane resource, completion token, and pose metadata by frame id.
 5. Add OpenXR eye packets only after the mono sequence is stable.
+6. For physics, capture registration first and then follow one event into its update or damage consumer. Registration alone does not prove a solver call.
 
 ## Read-only guardrails
 
