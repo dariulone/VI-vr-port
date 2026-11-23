@@ -66,6 +66,8 @@ This is the strongest static PresentX call site. It matches the public runtime e
 
 sub_1424827C0 converts timing and placement values into integer source and destination coordinates and writes them into per-slot presentation state. It uses qword_1475DE4B0 records with a 144-byte stride.
 
+Its final timing helper, `0x142482BC0`, compares the target timestamp against `QueryPerformanceCounter`, sleeps for the coarse remainder, and spins through a short timing helper until the target is reached. This is a pacing boundary. An OpenXR bridge should preserve the target timestamp and completion ordering while allowing `xrWaitFrame` to own the headset cadence.
+
 sub_1424826A0 rotates four presentation slots in qword_1475DF270 and qword_1468919E0. It calls the device at byte offset 0x288 with a 69888-byte presentation payload and then schedules frame events through sub_140A1C290. This is the strongest presentation-core boundary.
 
 The device call at `+0x288` returns a completion count and a temporary array of 56-byte records. The core walks that array and schedules event `10` for records with type `0x10000`, or event `9` for type `0x10000`-compatible records with the zero flag. This completion record is the first static evidence that the host presenter can report work after the payload call. Capture the returned count, record type, token, and the four-slot index together with the queue submission.

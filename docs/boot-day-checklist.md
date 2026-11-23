@@ -28,6 +28,7 @@ Attach the Rust bridge at these static boundaries.
 | Present lifecycle | 0x2484180 | current four-slot index and token |
 | Presentation core | 0x24826A0 | plane count, source resources, payload |
 | Presentation completion | device vtable +0x288 | payload size 69888, returned record count, 56-byte completion records, events 9/10 |
+| Presentation pacing | 0x2482BC0 | target timestamp, QPC wait, sleep/spin behavior |
 | Camera render packet | 0x2008AE0 -> 0x3231B30 -> 0x53159B0 | owner pointer, three 16-byte destination blocks at render-object +0x30/+0x40/+0x50 |
 
 The first goal is one stable mono frame through the original presentation path. Preserve the captured plane and token values.
