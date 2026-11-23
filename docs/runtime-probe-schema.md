@@ -49,6 +49,15 @@ The safe Rust representation is `gta6-vr-core::RuntimeProbeFrame`. Its validator
     "record_stride": 128,
     "metadata_flag_offset": 99,
     "aux_blocks": 4
+  },
+  "physics": {
+    "vehicle_deform": "0x0",
+    "explosion_vehicle_buffer": "0x0",
+    "explosion_ped_buffer": "0x0",
+    "particle_collision_job": "0x0",
+    "rain_resource": "0x0",
+    "water_mode": 0,
+    "constraint_index": -1
   }
 }
 ```
@@ -62,6 +71,7 @@ The safe Rust representation is `gta6-vr-core::RuntimeProbeFrame`. Its validator
 - `completion_events` records only the observed event ids `9` and `10` until runtime proves additional types.
 - `pose.record_stride` is `0x80`, `pose.metadata_flag_offset` is `0x63`, and `pose.aux_blocks` is `4`.
 - `culling.submit_slot` is `0xF0`, which is distinct from presentation plane slot `0x100` and resource batch slot `0x118`.
+- Physics handles are optional until the corresponding subsystem is active. A zero handle or `constraint_index = -1` means that no event was observed in that frame.
 
 ## Mono and stereo comparison
 
