@@ -36,9 +36,32 @@ sub_142482660 is a compact indirect submission helper.
         qword_1475E0E88,
         0);
 
-The method at byte offset 0x118 is the strongest static submission or synchronization candidate. It is not proven to be the final desktop present call. The worker receives a queue or resource index and a device-created object from the initializer.
+The method at byte offset 0x118 is the strongest execute or synchronization candidate. It is separate from the plane submission path below. The worker receives a queue or resource index and a device-created object from the initializer.
 
 The next runtime trace should log this call together with the resource state of the object in qword_1475E7300[index]. If the object is a command queue, this is the correct place to bridge command completion to an OpenXR eye image. If it is a fence or internal scheduler object, follow its returned handle to the host present boundary.
+
+## PresentX-shaped queue path
+
+The worker contains a second indirect queue call at byte offset 0x100. The call is made with a plane count and two temporary descriptor arrays.
+
+    queue->vtable[0x100 / 8](
+        queue,
+        plane_count,
+        plane_array,
+        present_parameters,
+        0);
+
+The record builder immediately before this call walks presentation records with an 80-byte stride, groups up to 256 records, stores source objects and plane metadata in temporary arrays, calls sub_1424827C0 to derive scaled placement values, calls sub_140A1C290 with frame-event ids 5 and 6, and clears the queue token after the call.
+
+This is the strongest static PresentX candidate. It matches the public runtime evidence that the Xbox queue has presentation slots beyond the desktop D3D12 chain. It is still a candidate until a live queue proxy confirms the slot signature.
+
+sub_1424827C0 converts timing and placement values into integer source and destination coordinates and writes them into per-slot presentation state. It uses qword_1475DE4B0 records with a 144-byte stride.
+
+sub_1424826A0 rotates four presentation slots in qword_1475DF270 and qword_1468919E0. It calls the device at byte offset 0x288 with a 69888-byte presentation payload and then schedules frame events through sub_140A1C290. This is the strongest presentation-core boundary.
+
+sub_1424828B0 updates frame-pacing history for the same four-slot ring. It adjusts the pacing origin, records the display interval, and calls sub_1424829E0.
+
+The native stereo bridge should target this path after it can provide two eye resources. The current worker supports a plane count, but it does not prove that a single plane can carry two array views. The first implementation should expose two explicit eye resources and preserve the original plane and token contracts.
 
 The current Leonida runtime provides a useful host-side comparison. Its Vulkan presenter accepts a back buffer or PresentX planes and blits to a Win32 swapchain. The repository's current README reports measured PresentX queue slots 30 and 32 wired to the presentation core, while the source comments still mark the exact console slot signatures as open. This makes slots 30 and 32 high-priority candidates when the translated executable is available. The host presenter is a bridge for validation. Native stereo still needs two eye render targets and per-eye camera constants before any final composition.
 
