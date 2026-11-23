@@ -7,6 +7,7 @@
 - Renderer initialization creates a window and calls `D3D12XboxCreateDevice`.
 - Camera setting, camera state, culling, mirror, skinning, motion matching, and pose matching anchors are present.
 - The camera helper chain now shows interpolation between `+0x2D0` and `+0x2E0`, constrained height at `+0x320`, and a four-component output at `0x14322F8D0`.
+- Pose finalization now shows four auxiliary hash-mapped arrays and a per-bone metadata byte at `+0x63` within the `0x80`-byte record stride.
 - The executable has no OpenXR, OpenVR, or SteamVR import or string.
 - A curated technical string table is available in [strings.md](strings.md).
 
@@ -21,7 +22,7 @@
 
 - Exact PresentX ABI signature and host swapchain or image handoff
 - Exact view and projection constant-buffer upload
-- Source pose producer and the semantic layout of the four mapped vector blocks
+- Source pose producer and the semantic names of the four mapped vector blocks
 - Per-eye treatment of temporal, mirror, portal, and screen-space passes
 - Proof that the translated runtime can boot this executable
 
