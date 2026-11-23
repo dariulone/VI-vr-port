@@ -23,6 +23,7 @@ pub enum FrameError {
 pub struct FrameCoordinator {
     frame_id: u64,
     stage: FrameStage,
+    eye_started: bool,
 }
 
 impl FrameCoordinator {
@@ -30,6 +31,7 @@ impl FrameCoordinator {
         Self {
             frame_id: 0,
             stage: FrameStage::Idle,
+            eye_started: false,
         }
     }
 
@@ -47,6 +49,7 @@ impl FrameCoordinator {
         }
         self.frame_id = frame_id;
         self.stage = FrameStage::AcquiringViews;
+        self.eye_started = false;
         Ok(())
     }
 
@@ -58,25 +61,37 @@ impl FrameCoordinator {
             return Err(FrameError::FrameMismatch);
         }
         self.stage = FrameStage::RenderingLeft;
+        self.eye_started = false;
         Ok(())
     }
 
     pub fn begin_eye(&mut self, eye: Eye) -> Result<(), FrameError> {
+        if self.eye_started {
+            return Err(FrameError::WrongStage);
+        }
         match (self.stage, eye) {
             (FrameStage::RenderingLeft, Eye::Left)
-            | (FrameStage::RenderingRight, Eye::Right) => Ok(()),
+            | (FrameStage::RenderingRight, Eye::Right) => {
+                self.eye_started = true;
+                Ok(())
+            }
             _ => Err(FrameError::WrongEye),
         }
     }
 
     pub fn finish_eye(&mut self, eye: Eye) -> Result<(), FrameError> {
+        if !self.eye_started {
+            return Err(FrameError::WrongStage);
+        }
         match (self.stage, eye) {
             (FrameStage::RenderingLeft, Eye::Left) => {
                 self.stage = FrameStage::RenderingRight;
+                self.eye_started = false;
                 Ok(())
             }
             (FrameStage::RenderingRight, Eye::Right) => {
                 self.stage = FrameStage::ReleasingImages;
+                self.eye_started = false;
                 Ok(())
             }
             _ => Err(FrameError::WrongEye),
@@ -91,11 +106,13 @@ impl FrameCoordinator {
             return Err(FrameError::FrameMismatch);
         }
         self.stage = FrameStage::Idle;
+        self.eye_started = false;
         Ok(())
     }
 
     pub fn abort(&mut self) {
         self.stage = FrameStage::Idle;
+        self.eye_started = false;
     }
 }
 
@@ -135,5 +152,16 @@ mod tests {
         assert_eq!(coordinator.publish_views(8), Err(FrameError::FrameMismatch));
         coordinator.abort();
         assert_eq!(coordinator.stage(), FrameStage::Idle);
+    }
+
+    #[test]
+    fn coordinator_rejects_duplicate_eye_begin_and_finish() {
+        let mut coordinator = FrameCoordinator::new();
+        coordinator.begin_frame(3).unwrap();
+        coordinator.publish_views(3).unwrap();
+        coordinator.begin_eye(Eye::Left).unwrap();
+        assert_eq!(coordinator.begin_eye(Eye::Left), Err(FrameError::WrongStage));
+        coordinator.finish_eye(Eye::Left).unwrap();
+        assert_eq!(coordinator.finish_eye(Eye::Left), Err(FrameError::WrongStage));
     }
 }
