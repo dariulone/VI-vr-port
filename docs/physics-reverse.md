@@ -2,6 +2,8 @@
 
 This document separates static physics-related evidence from render-only resources. The executable does not expose a Havok, PhysX, Bullet, or Chaos import. The physics core appears to be built from proprietary data-driven systems, GPU jobs, entity resources, and shared RAGE runtime helpers.
 
+All physics anchors in this document are also present in the checked-in Rust RVA manifest for future version-gated tracing.
+
 ## Backend evidence
 
 | Observation | Evidence | Interpretation |

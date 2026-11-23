@@ -44,6 +44,15 @@ pub struct RvaManifest {
     pub precision_context_update: usize,
     pub weapon_components: usize,
     pub projectile_location: usize,
+    pub vehicle_request_system: usize,
+    pub vehicle_deform_init: usize,
+    pub explosion_damage_init: usize,
+    pub gpu_particle_collision_init: usize,
+    pub rain_collision_init: usize,
+    pub water_simulation_init: usize,
+    pub water_system_state: usize,
+    pub constraint_name_resolver: usize,
+    pub horse_collision_response: usize,
 }
 
 pub const CURRENT_MANIFEST: RvaManifest = RvaManifest {
@@ -88,6 +97,15 @@ pub const CURRENT_MANIFEST: RvaManifest = RvaManifest {
     precision_context_update: 0x4ACB720,
     weapon_components: 0x1D1BBF0,
     projectile_location: 0x5B20870,
+    vehicle_request_system: 0x5814350,
+    vehicle_deform_init: 0xCBF1F0,
+    explosion_damage_init: 0x2511AB0,
+    gpu_particle_collision_init: 0x1AF3BA0,
+    rain_collision_init: 0x1D87EF0,
+    water_simulation_init: 0x1E490F0,
+    water_system_state: 0x26205C0,
+    constraint_name_resolver: 0x26870F0,
+    horse_collision_response: 0x1D8C9B0,
 };
 
 pub const QUEUE_PLANE_SUBMIT_SLOT: usize = 0x100;
@@ -203,6 +221,10 @@ mod tests {
         assert_ne!(CURRENT_MANIFEST.pose_finalize, 0);
         assert_ne!(CURRENT_MANIFEST.pose_aux_array_build, 0);
         assert_ne!(CURRENT_MANIFEST.projectile_location, 0);
+        assert_ne!(CURRENT_MANIFEST.vehicle_deform_init, 0);
+        assert_ne!(CURRENT_MANIFEST.explosion_damage_init, 0);
+        assert_ne!(CURRENT_MANIFEST.gpu_particle_collision_init, 0);
+        assert_ne!(CURRENT_MANIFEST.water_system_state, 0);
         assert_eq!(LIVE_HOOK_ORDER.len(), 16);
         assert_eq!(LIVE_HOOK_ORDER[0].rva(CURRENT_MANIFEST), CURRENT_MANIFEST.device_init);
         assert_eq!(LIVE_HOOK_ORDER[15].rva(CURRENT_MANIFEST), CURRENT_MANIFEST.bone_hash_map);
