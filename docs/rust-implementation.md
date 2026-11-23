@@ -81,6 +81,8 @@ Use explicit C-compatible structures at the hook boundary.
 
 The checked-in packet and manifest types use explicit `repr(C)` or integer enum representations. This makes the layout stable for the future native hook layer while the opaque pose payload remains byte-addressable.
 
+`vr-core` exposes `RuntimeProbeFrame` with validation for the observed 256-record queue limit and 69,888-byte presentation payload.
+
     #[repr(C)]
     pub struct EyePacket {
         pub frame_id: u64,

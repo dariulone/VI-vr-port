@@ -30,6 +30,39 @@ pub struct EyePacket {
     pub image_handle: u64,
 }
 
+pub const QUEUE_BATCH_MAX: u32 = 256;
+pub const PRESENT_PAYLOAD_BYTES: u32 = 69_888;
+
+#[repr(u8)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum ProbePhase {
+    Mono = 0,
+    Left = 1,
+    Right = 2,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct RuntimeProbeFrame {
+    pub frame_id: u64,
+    pub qpc_tick: u64,
+    pub phase: ProbePhase,
+    pub _padding: [u8; 7],
+    pub queue_batch_count: u32,
+    pub plane_count: u32,
+    pub payload_bytes: u32,
+    pub completion_count: u32,
+    pub pose_count: u32,
+    pub culling_index_count: u32,
+}
+
+impl RuntimeProbeFrame {
+    pub fn is_valid(self) -> bool {
+        self.queue_batch_count <= QUEUE_BATCH_MAX
+            && (self.payload_bytes == 0 || self.payload_bytes == PRESENT_PAYLOAD_BYTES)
+    }
+}
+
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct FrustumBounds {
@@ -180,6 +213,27 @@ mod tests {
         };
         assert_eq!(packet.shot_origin(), [5.0, 0.0, 0.0]);
         assert_eq!(packet.shot_direction(), [0.0, 1.0, 0.0]);
+    }
+
+    #[test]
+    fn runtime_probe_accepts_pre_present_and_present_payloads() {
+        let mut frame = RuntimeProbeFrame {
+            frame_id: 1,
+            qpc_tick: 2,
+            phase: ProbePhase::Mono,
+            _padding: [0; 7],
+            queue_batch_count: QUEUE_BATCH_MAX,
+            plane_count: 1,
+            payload_bytes: 0,
+            completion_count: 0,
+            pose_count: 0,
+            culling_index_count: 0,
+        };
+        assert!(frame.is_valid());
+        frame.payload_bytes = PRESENT_PAYLOAD_BYTES;
+        assert!(frame.is_valid());
+        frame.queue_batch_count += 1;
+        assert!(!frame.is_valid());
     }
 }
 
