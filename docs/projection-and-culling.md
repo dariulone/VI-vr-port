@@ -71,9 +71,23 @@ The render-owned handoff provides an additional static trace target. The active 
 
 The image contains explicit `InstanceCulling`, `meshlet_culling`, and portal stencil culling paths.
 
+### Instance-culling batch path
+
+The registration function at `0x145700770` is followed by a concrete batch builder at `0x1425D8590`.
+
+| Function | RVA | Static behavior |
+|---|---:|---|
+| Instance-culling registration | `0x145700770` | Registers the `InstanceCulling` resource and its configuration fields |
+| Instance-culling batch builder | `0x1425D8590` | Walks 528-byte group records, iterates up to 16 lanes per group, filters candidate ranges, writes a compact index list, and submits the list through a context vtable method at byte offset `+0xF0` |
+| Range accumulator | `0x1455BFC50` | Adds a candidate offset to `a4[2]`, clamps the accumulated low and high bounds in `a4[3]` and `a4[4]`, and checks against `a4[16]` |
+
+The `+0xF0` method belongs to the culling or command context. It is distinct from the presentation queue method at `+0x100`. The batch builder also reaches context methods at `+0x60`, `+0x88`, and `+0x160` while publishing the generated list. The static path does not expose an eye index, so the first stereo patch should feed a conservative union frustum into the batch inputs and keep the generated list shared. Per-eye lists can be introduced after a live trace shows an eye-aware resource or pass identifier.
+
 ### Broad phase
 
 Build a conservative union frustum from both eye frusta. Use it for instance and portal broad-phase tests. This avoids dropping an object that is visible in only one eye.
+
+For the instance path, trace the input context passed to `0x1425D8590` and the range state consumed by `0x1455BFC50`. The first useful runtime evidence is the list count, the low and high range values, the pass identifier, and the resource bound to the `+0xF0` submission. A change in list count when only the HMD rotates indicates that the camera packet has reached culling.
 
 ### Fine phase
 

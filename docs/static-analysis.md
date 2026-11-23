@@ -99,6 +99,8 @@ The image initializes named render subsystems.
 
 `InstanceCulling`, `meshlet_culling`, and `portal_prepass_stencil_culling` must all receive stereo-aware visibility inputs. A stereo patch that changes only the camera matrix will produce eye-dependent holes when the original single-eye cull rejects an object.
 
+The instance-culling runtime path is more concrete than the registration table. `0x1425D8590` walks 528-byte group records, accumulates candidate ranges through `0x1455BFC50`, builds a compact index list, and submits it through a context method at byte offset `+0xF0`. That slot is separate from the presentation plane method at `+0x100`, so culling and presentation can be traced independently.
+
 ## Static conclusions
 
 1. The renderer is created inside the executable through a native Xbox D3D12 device call.
