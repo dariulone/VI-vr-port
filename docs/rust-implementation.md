@@ -1,0 +1,184 @@
+# Rust implementation plan
+
+The mod should be organized as a Rust workspace with a small unsafe boundary. Reverse-engineered addresses and calling conventions stay in one adapter crate. OpenXR frame logic, projection math, culling policy, pose solving, logging, and configuration remain safe Rust.
+
+## Workspace layout
+
+    gta6-vr-port/
+      crates/
+        vr-core/
+        vr-openxr/
+        vr-render-bridge/
+        vr-pose/
+        vr-input/
+        vr-telemetry/
+        vr-testkit/
+      tools/
+        ida/
+      docs/
+
+### vr-core
+
+Owns frame identifiers, eye packets, world-scale calibration, configuration, diagnostics, and feature gates. It has no process-specific addresses and can be unit tested without a game.
+
+### vr-openxr
+
+Owns the OpenXR instance, session, spaces, swapchain images, action sets, view location, and frame timing. It publishes a complete two-eye packet through a lock-free or sequence-checked handoff.
+
+### vr-render-bridge
+
+Owns the unsafe FFI and hook adapters for the translated renderer. It contains:
+
+- image base and RVA resolution
+- version and hash checks
+- opaque Xbox device and queue handles
+- camera packet injection
+- PresentX or host-present tracing
+- per-eye resource selection
+- frame completion signals
+
+No pose math belongs here.
+
+### vr-pose
+
+Owns skeleton calibration, pose records, two-bone arm IK, optional leg IK, and blend policies. It accepts opaque source pose records until the vector semantics are confirmed by a trace.
+
+### vr-input
+
+Maps OpenXR actions to the game's input bridge. Handedness and bindings are data-driven.
+
+### vr-telemetry
+
+Writes bounded logs for frame id, eye index, queue submission, camera constants, culling mode, pose count, and hook failures. It must never write game resources or raw buffers to the public repository.
+
+### vr-testkit
+
+Contains pure Rust tests for projection matrices, frustum unions, calibration, pose blending, and record-size checks.
+
+## Unsafe boundary
+
+Only these modules should contain unsafe code.
+
+    vr-render-bridge/src/ffi.rs
+    vr-render-bridge/src/hooks.rs
+    vr-render-bridge/src/rvas.rs
+
+Every FFI function should have a safe wrapper that validates:
+
+- image base and module range
+- function RVA
+- pointer alignment
+- record length
+- eye index
+- frame sequence
+- resource state assumptions
+
+The wrapper returns a typed error and disables the feature gate after a failed validation. It must not continue through an invalid pointer.
+
+## Shared Rust data types
+
+Use explicit C-compatible structures at the hook boundary.
+
+    #[repr(C)]
+    pub struct EyePacket {
+        pub frame_id: u64,
+        pub eye: u8,
+        pub _pad: [u8; 7],
+        pub view: [[f32; 4]; 4],
+        pub projection: [[f32; 4]; 4],
+        pub camera_world: [f32; 3],
+        pub near_z: f32,
+        pub far_z: f32,
+        pub viewport: [u32; 4],
+        pub image_handle: u64,
+    }
+
+The private pose boundary should initially use an opaque record.
+
+    #[repr(C)]
+    pub struct PoseRecord128 {
+        pub bytes: [u8; 128],
+    }
+
+The current static evidence proves a 0x80-byte per-bone stride and a hash-to-record lookup. It does not prove the component order of all 128 bytes, so the Rust type must remain opaque until runtime capture validates the layout.
+
+## Frame state machine
+
+Keep the state transitions explicit.
+
+    Idle
+      -> AcquiringViews
+      -> RenderingLeft
+      -> RenderingRight
+      -> ReleasingImages
+      -> Submitted
+      -> Idle
+
+An error state records the frame id and disables only the affected feature. OpenXR session loss, image-acquire failure, and invalid renderer pointers must not leave a swapchain image held.
+
+## Native stereo bridge
+
+The renderer adapter should expose these safe operations.
+
+    begin_frame()
+    set_eye_packet(EyePacket)
+    begin_eye(Eye)
+    end_eye(Eye)
+    submit_frame()
+
+The first implementation can call the original renderer once per eye. A later single-pass path can be added after the two-eye path proves depth, culling, and post effects.
+
+The Rust bridge must not synthesize a mono image and reproject it. Each eye gets its own view, projection, depth, and temporal history policy.
+
+## Asymmetric projection
+
+OpenXR supplies per-eye tangents. Keep the pure math in vr-core.
+
+    pub struct EyeFov {
+        pub left: f32,
+        pub right: f32,
+        pub up: f32,
+        pub down: f32,
+    }
+
+    pub fn projection_from_tangents(
+        fov: EyeFov,
+        near_z: f32,
+        far_z: f32,
+    ) -> [[f32; 4]; 4]
+
+The function must be tested against the engine's row or column convention after a constant-buffer capture. The hook layer only transports the resulting matrix.
+
+## Pose and VRIK bridge
+
+The intended Rust call order is:
+
+    read source pose handle
+    copy or lock the local-player pose record
+    solve head and hand targets
+    write parent-relative local transforms
+    call the existing pose finalizer
+    let the hash mapper and ped_skinning_cs continue
+
+The static pose path is:
+
+    0x14523B630 source pose lookup
+    0x14523B680 pose copy
+    0x14523BD00 pose finalization
+    0x14523C6F0 hash-to-record mapping
+    0x1427C15A0 skinning record construction
+
+Rust should insert the solver between the pose copy and the finalizer. The first runtime version should modify only the local player and should preserve the original record when calibration or ownership checks fail.
+
+## Versioning and test gates
+
+The adapter should use a version manifest with:
+
+- input SHA-256
+- image base
+- function RVAs
+- expected prologue bytes
+- pose stride
+- supported renderer ABI
+
+The mod should refuse to attach when the manifest does not match. Pure math tests can run on every build. FFI smoke tests require a local translated runtime and stay outside CI that has no game process.

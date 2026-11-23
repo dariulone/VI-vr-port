@@ -25,6 +25,7 @@ The repository contains derived facts, RVAs, curated technical strings, and auth
 7. [Research status](docs/research-status.md)
 8. [Public references](docs/references.md)
 9. [External project status](docs/external-status.md)
+10. [Rust implementation](docs/rust-implementation.md)
 
 ## Analysis identity
 
