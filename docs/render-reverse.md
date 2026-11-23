@@ -40,6 +40,8 @@ The method at byte offset 0x118 is the strongest static submission or synchroniz
 
 The next runtime trace should log this call together with the resource state of the object in qword_1475E7300[index]. If the object is a command queue, this is the correct place to bridge command completion to an OpenXR eye image. If it is a fence or internal scheduler object, follow its returned handle to the host present boundary.
 
+The current Leonida runtime provides a useful host-side comparison. Its Vulkan presenter accepts a back buffer or PresentX planes and blits to a Win32 swapchain. The repository's current README reports measured PresentX queue slots 30 and 32 wired to the presentation core, while the source comments still mark the exact console slot signatures as open. This makes slots 30 and 32 high-priority candidates when the translated executable is available. The host presenter is a bridge for validation. Native stereo still needs two eye render targets and per-eye camera constants before any final composition.
+
 ## Frame entry
 
 sub_14041E9E0 has a distinct frame marker and several context methods.
