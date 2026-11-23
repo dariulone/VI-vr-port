@@ -120,6 +120,9 @@ mod tests {
         assert_ne!(CURRENT_MANIFEST.frustum_resource_dispatch, 0);
         assert_ne!(CURRENT_MANIFEST.frustum_range_dispatch, 0);
         assert_ne!(CURRENT_MANIFEST.frustum_range_process, 0);
+        assert_ne!(CURRENT_MANIFEST.frustum_resource_wrapper, 0);
+        assert_ne!(CURRENT_MANIFEST.frustum_intersection_math, 0);
+        assert_ne!(CURRENT_MANIFEST.pose_gate_update, 0);
         assert_eq!(QUEUE_PLANE_SUBMIT_SLOT, 0x100);
         assert_eq!(QUEUE_BATCH_SUBMIT_SLOT, 0x118);
         assert_ne!(CURRENT_MANIFEST.pose_finalize, 0);
