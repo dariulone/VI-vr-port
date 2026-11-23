@@ -67,6 +67,8 @@ The first runtime trace should log the camera output record, the projection cons
 
 The render-owned handoff provides an additional static trace target. The active camera owner at `0x142008AE0` calls `0x143231B30`, which prepares a resource record and reaches `0x1453159B0`. That copier writes three vector-sized blocks at render-object offsets `+0x30`, `+0x40`, and `+0x50`. Watch these blocks together with the later constant-buffer bind. This separates camera-state mutation from the packet that the render graph actually receives.
 
+The first downstream bounds consumer is `0x14031B0B0`. It reads render-object `+0x4D0` and `+0x4F0`, combines them with a caller transform basis, and produces min/max vectors for a visibility object. Trace its packed handle and the `0x14031BC70` result while changing only the HMD orientation. A changed AABB or handle confirms that camera packet data has reached culling.
+
 ## Culling
 
 The image contains explicit `InstanceCulling`, `meshlet_culling`, and portal stencil culling paths.

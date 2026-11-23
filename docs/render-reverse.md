@@ -157,6 +157,16 @@ The temporary packet passed through this path contains the four-component result
 
 The recommended first live trace is therefore `0x142008AE0 → 0x143231B30 → 0x1453159B0`. Capture the three destination blocks, their owner pointer, and the following resource identifier. If the first block is the view or camera position, duplicate the packet for left and right eyes at this boundary. If it is a culling-only packet, continue to the first constant upload after `0x1400D0610`.
 
+### Render-object visibility consumer
+
+The render-owned packet has a downstream transform consumer at `0x14031B0B0`.
+
+- It reads the render-object fields at `+0x4D0` and `+0x4F0` together with a four-vector transform basis supplied by the caller.
+- SIMD multiply-add operations produce two min/max vectors in a 64-byte temporary block.
+- It passes a packed handle through `0x14031BC70`, then continues through state helpers at `0x1451D7080` and `0x1451D70D0`.
+
+This is a concrete visibility or bounds handoff. It is useful for verifying that the camera packet reached culling. It does not establish the projection matrix upload, so the stereo hook should preserve this path and continue tracing after it.
+
 ## Native stereo insertion
 
 The native stereo path should be inserted at the boundary where the camera packet becomes render constants.
