@@ -1,0 +1,42 @@
+# Curated technical strings
+
+This is a small, purpose-selected list of renderer, camera, culling, skinning, and character labels. It is a navigation aid for independent static analysis. It is not a dump of the executable's full string table.
+
+| String | Address | RVA | Category | Cross-reference |
+|---|---:|---:|---|---:|
+| `sgaWindowClass` | `0x14677B672` | `0x677B672` | window and renderer init | `0x142478440` |
+| `projectionCenter` | `0x14677D8F0` | `0x677D8F0` | projection data label | config table |
+| `perspectiveProjection` | `0x14677EFE2` | `0x677EFE2` | projection data label | config table |
+| `PerspectiveProjection` | `0x14677EFF8` | `0x677EFF8` | projection data label | config table |
+| `fieldOfView` | `0x146778FCD` | `0x6778FCD` | camera data label | config table |
+| `CameraSetting` | `0x146780E78` | `0x6780E78` | settings group | `0x145A44800`, `0x14324A230` |
+| `Camera_Move` | `0x14678187F` | `0x678187F` | camera event | `0x142650D40` |
+| `Eye Presets` | `0x14677B3D6` | `0x677B3D6` | eye configuration | `0x1456B0B70` |
+| `DynStereo%d` | `0x146785006` | `0x6785006` | stereo-named object family | `0x141F8BEC0` |
+| `InstanceCulling` | `0x146781173` | `0x6781173` | culling subsystem | `0x145700770` |
+| `meshlet_culling` | `0x146781144` | `0x6781144` | culling subsystem | `0x145B03CB0` |
+| `portal_prepass_stencil_culling` | `0x146781154` | `0x6781154` | portal visibility | `0x140CCC430`, `0x14374F390` |
+| `resolve_mirror_reprojection` | `0x14677EFC6` | `0x677EFC6` | mirror and reprojection path | `0x140CCC430`, `0x14374F390` |
+| `ped_skinning_cs` | `0x14677C8FC` | `0x677C8FC` | skinning compute shader | `0x1427C0400` |
+| `bvh_skinning` | `0x1467810F3` | `0x67810F3` | BVH skinning | `0x140CC5160` |
+| `bvh_skinning_smh` | `0x146780C78` | `0x6780C78` | BVH skinning | `0x140CC5160` |
+| `SKEL_PELVIS` | `0x146786C28` | `0x6786C28` | character bone | string table |
+| `SKEL_R_HAND` | `0x146787F2C` | `0x6787F2C` | character bone | string table |
+| `SKEL_L_HAND` | `0x146787F38` | `0x6787F38` | character bone | string table |
+| `GoalRotationOffsetsKeyedArray` | `0x14677891C` | `0x677891C` | pose goal data | `0x144391850` |
+| `MotionMatcherStore` | `0x146782158` | `0x6782158` | motion matching | `0x145B40DF0` |
+| `PoseMatcherStore` | `0x14678216B` | `0x678216B` | pose matching | `0x145B92B00` |
+| `common:/data/ai/PedMotionData` | `0x146785DF7` | `0x6785DF7` | ped motion metadata | `0x14598AAE0` |
+
+## Import labels
+
+- `D3D12XboxCreateDevice`
+- `D3D12SerializeVersionedRootSignature`
+- `D3D12ConfigureVirtualMemoryX`
+- `GameInputCreate`
+- `XboxBvhBuilder`
+- `ffxCreateContext`
+- `ffxDispatch`
+- `XMemVirtualAlloc`
+
+No OpenXR, OpenVR, SteamVR, or `xr*` runtime entry point was found in the import table.

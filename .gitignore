@@ -1,0 +1,14 @@
+# Private analysis databases and generated reports
+*.i64
+*.idb
+*.dmp
+vr_static_report/
+ida.log
+
+# Game binaries and package data
+*.exe
+*.xvc
+*.rpf
+*.pso
+*.bin
+__pycache__/
