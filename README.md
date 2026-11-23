@@ -17,12 +17,13 @@ The repository contains derived facts, RVAs, curated technical strings, and auth
 ## Reading order
 
 1. [Static analysis](docs/static-analysis.md)
-2. [Native stereo](docs/native-stereo.md)
-3. [Projection and culling](docs/projection-and-culling.md)
-4. [Character pose and VRIK](docs/character-vrik.md)
-5. [Curated strings](docs/strings.md)
-6. [Research status](docs/research-status.md)
-7. [Public references](docs/references.md)
+2. [Render reverse engineering](docs/render-reverse.md)
+3. [Native stereo](docs/native-stereo.md)
+4. [Projection and culling](docs/projection-and-culling.md)
+5. [Character pose and VRIK](docs/character-vrik.md)
+6. [Curated strings](docs/strings.md)
+7. [Research status](docs/research-status.md)
+8. [Public references](docs/references.md)
 
 ## Analysis identity
 

@@ -100,3 +100,11 @@ The image initializes named render subsystems.
 3. A native stereo port needs a host presenter, per-eye view and projection constants, stereo-aware visibility, and a compositor submission path.
 4. The camera object and the skinning compute setup are statically located.
 5. The CPU pose write and the final frame-present call still need runtime tracing.
+
+## New render and pose evidence
+
+The graphics worker path is now separated from initialization. 0x145CABA60 registers 0x142481E90 as a worker callback. The worker drains eight-lane command queues and calls 0x142482660 at command or resource boundaries. 0x142482660 invokes a context vtable method at byte offset 0x118 with an entry from qword_1475E7300. This is the strongest submission or synchronization candidate and needs a live frame to distinguish queue execution from host presentation.
+
+The per-ped render update at 0x1435B3B30 calls pose finalization at 0x14523BD00 and then builds skinning draw records through 0x1427C15A0. A second owner path at 0x1403ADF90 reaches the same pose finalizer.
+
+The pose copy at 0x14523B680 reads a count at source offset +0x0C and copies 0x80-byte records from +0x10. The bone mapper at 0x14523C6F0 resolves each bone hash through 0x144DAAFC0 and copies four 32-byte vector blocks. The VRIK solver should modify this local pose block before the mapper runs.

@@ -91,3 +91,11 @@ A successful trace should identify a pose buffer address, stride, bone count, an
 - Verify weapon sockets follow the solved hand bones.
 - Disable VRIK during a cinematic and verify that the original animation resumes.
 - Compare the skinning buffer before and after one hand movement.
+
+## Static evidence update
+
+The pose handoff is now located. The per-ped render update is at 0x1435B3B30, with a second owner path at 0x1403ADF90. Both paths copy pose data and finalize it before the skinning resource builder.
+
+The pose copy function at 0x14523B680 reads the count at source offset +0x0C, copies records from +0x10, and uses a 0x80-byte stride per bone. The hash mapper at 0x14523C6F0 reads one bone hash per index, resolves it through 0x144DAAFC0, and copies four 32-byte vector blocks into the render-facing arrays.
+
+The recommended VRIK write boundary is the local parent-relative pose block immediately before 0x14523C6F0. This keeps the existing hash map, metadata finalizer, and ped_skinning_cs path intact.
