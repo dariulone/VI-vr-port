@@ -33,7 +33,8 @@ The repository contains derived facts, RVAs, curated technical strings, and auth
 14. [IDA static harness](docs/ida-harness.md)
 15. [Runtime probe schema](docs/runtime-probe-schema.md)
 16. [x64dbg live attach map](docs/x64dbg-live-attach.md)
-17. [Rust workspace](crates/vr-core/src/lib.rs)
+17. [Completion matrix](docs/completion-matrix.md)
+18. [Rust workspace](crates/vr-core/src/lib.rs)
 
 ## Analysis identity
 
