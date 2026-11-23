@@ -50,6 +50,12 @@ The parser calls `sub_1453808B0` and dispatches a body update through a vtable m
 
 `0x1456D8090` loads `common:/data/ai/DefaultVehicleAiHandlingEntry`. This is a vehicle handling resource path. It should be traced alongside the rigid-body record when investigating vehicle force generation, but it does not prove that handling values are the same structure as physical mass or contact material data.
 
+### Damping and force coefficients
+
+`0x144455000` wraps the rigid-body parser and additionally reads `damping`, `linearC`, `linearV`, `linearV2`, `angularC`, `angularV`, and `angularV2`. The vector coefficients are copied into body fields at `+0x70`, `+0x80`, `+0x90`, `+0xA0`, `+0xB0`, and `+0xC0`. This is the clearest static schema for translational and angular damping/force coefficients.
+
+`0x141F97990` is a dynamic update candidate. When the body type at the resolved body object equals `4`, it sets a body-state flag, calls `0x1453808B0` on the body state, passes a 56-byte temporary record through `0x14517E960`, and returns through `0x144EE47B0`. These are high-priority runtime breakpoints for identifying the solver update and body integration cadence.
+
 ## Vehicle physics and deformation
 
 ### Vehicle request system

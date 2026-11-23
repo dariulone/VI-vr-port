@@ -49,6 +49,22 @@ This is a small, purpose-selected list of renderer, camera, culling, skinning, a
 | `rollingfriction:` | `0x1467889B2` | `0x6889B2` | physics material parameter | `0x144896800` |
 | `buoyancyFactor:` | `0x146788958` | `0x688958` | rigid-body water parameter | `0x144454BE0` |
 | `common:/data/ai/DefaultVehicleAiHandlingEntry` | `0x1467785ED` | `0x67785ED` | vehicle handling data | `0x1456D8090` |
+| `elasticity:` | `0x146788815` | `0x6788815` | physics material parameter | `0x144896800` |
+| `springconstant:` | `0x146788866` | `0x6788866` | physics material parameter | `0x144896800` |
+| `springdamping:` | `0x146788A2D` | `0x6788A2D` | physics material parameter | `0x144896800` |
+| `mass:` | `0x1467888B8` | `0x67888B8` | rigid-body parameter | `0x144454BE0` |
+| `density:` | `0x14678880C` | `0x678880C` | rigid-body parameter | `0x144454BE0` |
+| `angInertia:` | `0x146788ACD` | `0x6788ACD` | rigid-body parameter | `0x144454BE0` |
+| `inertiaBox:` | `0x146788829` | `0x6788829` | rigid-body parameter | `0x144454BE0` |
+| `inertiaScale:` | `0x146788A73` | `0x6788A73` | rigid-body parameter | `0x144454BE0` |
+| `damping` | `0x14678109E` | `0x678109E` | rigid-body damping group | `0x144455000` |
+| `linearC:` | `0x146788B41` | `0x6788B41` | damping coefficient | `0x144455000` |
+| `linearV:` | `0x146788B11` | `0x6788B11` | damping coefficient | `0x144455000` |
+| `linearV2:` | `0x146788B8C` | `0x6788B8C` | damping coefficient | `0x144455000` |
+| `angularC:` | `0x146788B37` | `0x6788B37` | damping coefficient | `0x144455000` |
+| `angularV:` | `0x146788B07` | `0x6788B07` | damping coefficient | `0x144455000` |
+| `angularV2:` | `0x146788B81` | `0x6788B81` | damping coefficient | `0x144455000` |
+| `gravityFactor:` | `0x146788949` | `0x6788949` | rigid-body gravity parameter | `0x144454BE0` |
 
 ## Import labels
 

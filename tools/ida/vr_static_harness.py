@@ -65,6 +65,8 @@ STATIC_TARGETS = [
     ("horse_collision_response", 0x1D8C9B0),
     ("physics_material_params", 0x4896800),
     ("rigid_body_params", 0x4454BE0),
+    ("rigid_body_config", 0x4455000),
+    ("rigid_body_dynamic_update", 0x1F97990),
     ("vehicle_handling_data", 0x56D8090),
 ]
 
