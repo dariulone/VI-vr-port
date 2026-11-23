@@ -148,6 +148,8 @@ The wrappers should log the frame id and resource ids around these calls. They s
 
 The checked-in `gta6-vr-render-bridge` manifest mirrors these targets and also includes the camera view and clip updates, pose source and finalizer, skinning record builder, PrecisionAimContext, weapon component mapping, and projectile-location registration. This keeps the boot-day hook list in one versioned Rust constant while the TOML file remains convenient for external harnesses.
 
+The camera render-object handoff is included as `camera_owner_tick`, `camera_render_prepare`, `camera_packet_copy`, `camera_render_object_init`, and `camera_render_object_accessor`. These targets let the first live trace start at the camera owner and stop at the render-owned packet before the generic resource submission helpers.
+
 ## Asymmetric projection
 
 OpenXR supplies per-eye tangents. Keep the pure math in vr-core.

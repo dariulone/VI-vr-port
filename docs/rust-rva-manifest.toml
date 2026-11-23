@@ -18,6 +18,8 @@ camera_clip_update = "0x32307f0"
 camera_owner_tick = "0x2008ae0"
 camera_render_prepare = "0x3231b30"
 camera_packet_copy = "0x53159b0"
+camera_render_object_init = "0x5ca410"
+camera_render_object_accessor = "0x4febb80"
 render_resource_register = "0xd0320"
 render_resource_finalize = "0xd0610"
 

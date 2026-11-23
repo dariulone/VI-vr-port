@@ -135,6 +135,7 @@ The next downstream handoff is now statically identified.
 | Render camera preparation | `0x143231B30` | Reads the camera object at owner `+0x230`, calls `0x14322F690` with a unit blend, builds command/resource records, and submits them through `0x1400D0320` and `0x1400D0610` |
 | Camera packet copy | `0x1453159B0` | Copies three 16-byte blocks from the temporary camera packet into the render-owned object at `+0x30`, `+0x40`, and `+0x50` |
 | Render-owned object accessor | `0x144FEBB80` | Returns the object at `a1 + 1184`, so the copied fields are at owner-relative `+1216`, `+1232`, and `+1248` |
+| Camera render-object initializer | `0x1405CA410` | Initializes the render-owned camera object, clears its auxiliary vector and state fields, and sets the object state used by the preparation record |
 
 The temporary packet passed through this path contains the four-component result of `0x14322F690`, a scalar broadcast from the source camera, and a second four-component block prepared by the render preparation function. The exact semantic names of those blocks remain runtime candidates. The copy itself is proven and gives the first practical watchpoint for a per-eye camera packet before the generic resource bookkeeping runs.
 
