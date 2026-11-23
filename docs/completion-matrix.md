@@ -13,6 +13,7 @@ This matrix is the current audit of the requested preparation work. A runtime it
 | Frustum and culling | `0x4128B0`, `0x4440C60`, CPU range chain, `0x25D8590` | Verified statically, GPU consumer runtime gate open |
 | Pose and VRIK handoff | `0x523B630`, `0x523B680`, `0x523BD00`, `0x523C690`, `0x523C6F0` | Verified statically, source producer and vector semantics runtime gate open |
 | Decoupled aim | PrecisionAimContext, Muzzle, Wpn_LOC_Projectile anchors | Verified statically, launch/hit resolver runtime gate open |
+| Physics resources | Vehicle deform, explosion damage, GPU particles, rain, water, constraints, horse response | Verified statically, solver/contact ABI runtime gate open |
 | OpenXR frame coordination | `gta6-vr-openxr` coordinator and two-eye tests | Unit-tested |
 | Version and hook gating | `manifest_matches`, `LIVE_HOOK_ORDER`, image base and SHA-256 | Unit-tested |
 | Static harness and strings | 21 targets with xrefs, 80 selected strings, 40 render candidates | Verified on the current IDA database |
