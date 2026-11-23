@@ -130,6 +130,22 @@ The first implementation can call the original renderer once per eye. A later si
 
 The Rust bridge must not synthesize a mono image and reproject it. Each eye gets its own view, projection, depth, and temporal history policy.
 
+## Render bridge targets
+
+The first Rust adapter manifest should expose these static targets.
+
+| Target | RVA | Rust wrapper role |
+|---|---:|---|
+| Camera output builder | 0x322F5D0 | Capture original camera output values |
+| Camera output finalizer | 0x322F8D0 | Publish the four-component camera packet |
+| Present lifecycle | 0x2484180 | Select the current presentation slot |
+| Presentation core | 0x24826A0 | Submit plane resources and schedule frame events |
+| Queue submission helper | 0x2482660 | Track command or synchronization completion |
+| Pose copy | 0x523B680 | Copy and validate the 0x80-byte pose records |
+| Bone hash mapper | 0x523C6F0 | Resolve hashes and build render-facing records |
+
+The wrappers should log the frame id and resource ids around these calls. They should never assume that the presentation core has the same signature as a desktop IDXGISwapChain method.
+
 ## Asymmetric projection
 
 OpenXR supplies per-eye tangents. Keep the pure math in vr-core.
