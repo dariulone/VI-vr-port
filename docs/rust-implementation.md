@@ -79,6 +79,8 @@ The wrapper returns a typed error and disables the feature gate after a failed v
 
 Use explicit C-compatible structures at the hook boundary.
 
+The checked-in packet and manifest types use explicit `repr(C)` or integer enum representations. This makes the layout stable for the future native hook layer while the opaque pose payload remains byte-addressable.
+
     #[repr(C)]
     pub struct EyePacket {
         pub frame_id: u64,
