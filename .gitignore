@@ -12,4 +12,7 @@ ida.log
 *.pso
 *.bin
 __pycache__/
+
+# Local mirrors managed by the XCL/Victory sync task
+mirrors/
 target/
