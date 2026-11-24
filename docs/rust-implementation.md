@@ -4,7 +4,7 @@ The mod should be organized as a Rust workspace with a small unsafe boundary. Re
 
 ## Workspace layout
 
-    gta6-vr-port/
+    VI-vr-port/
       crates/
         vr-core/
         vr-openxr/
@@ -25,7 +25,7 @@ Owns frame identifiers, eye packets, world-scale calibration, configuration, dia
 
 Owns the OpenXR instance, session, spaces, swapchain images, action sets, view location, and frame timing. It publishes a complete two-eye packet through a lock-free or sequence-checked handoff.
 
-The checked-in `gta6-vr-openxr` crate currently provides the safe frame coordinator and stereo-view handoff. The platform-specific OpenXR bindings can be connected at this boundary after the runtime presents a usable host process.
+The checked-in `vi-vr-openxr` crate currently provides the safe frame coordinator and stereo-view handoff. The platform-specific OpenXR bindings can be connected at this boundary after the runtime presents a usable host process.
 
 ### vr-render-bridge
 
@@ -154,7 +154,7 @@ The first Rust adapter manifest should expose these static targets.
 
 The wrappers should log the frame id and resource ids around these calls. They should never assume that the presentation core has the same signature as a desktop IDXGISwapChain method.
 
-The checked-in `gta6-vr-render-bridge` manifest mirrors these targets and also includes the camera view and clip updates, pose source and finalizer, skinning record builder, PrecisionAimContext, weapon component mapping, and projectile-location registration. This keeps the boot-day hook list in one versioned Rust constant while the TOML file remains convenient for external harnesses.
+The checked-in `vi-vr-render-bridge` manifest mirrors these targets and also includes the camera view and clip updates, pose source and finalizer, skinning record builder, PrecisionAimContext, weapon component mapping, and projectile-location registration. This keeps the boot-day hook list in one versioned Rust constant while the TOML file remains convenient for external harnesses.
 
 The camera render-object handoff is included as `camera_owner_tick`, `camera_render_prepare`, `camera_packet_copy`, `camera_render_object_init`, and `camera_render_object_accessor`. These targets let the first live trace start at the camera owner and stop at the render-owned packet before the generic resource submission helpers.
 

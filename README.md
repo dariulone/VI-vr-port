@@ -1,4 +1,4 @@
-# GTA6 VR Port Research
+# VI VR Port Research
 
 Static reverse-engineering notes and an implementation plan for a native OpenXR stereo port.
 

@@ -8,7 +8,7 @@ $ErrorActionPreference = 'Stop'
 $mirrorRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\mirrors'))
 $logRoot = Join-Path $mirrorRoot 'logs'
 $statusPath = Join-Path $mirrorRoot 'sync-status.json'
-$taskName = 'GTA6-VR-XCL-Victory-Sync'
+$taskName = 'VI-VR-XCL-Victory-Sync'
 
 $repositories = @(
     [pscustomobject]@{

@@ -6,7 +6,7 @@ Its output is used to maintain the derived findings in this repository.
 
 ## Local invocation
 
-    & 'C:\Program Files\IDA Professional 9.2\idat.exe' -A -S'D:\gta6-vr-port\tools\ida\vr_static_harness.py' 'C:\path\to\private\analysis.i64'
+    & 'C:\Program Files\IDA Professional 9.2\idat.exe' -A -S'D:\VI-vr-port\tools\ida\vr_static_harness.py' 'C:\path\to\private\analysis.i64'
 
 The harness is static-only. It enumerates imports, selected strings, cross-references, render candidates, and the checked-in camera, frustum, culling, presentation, pose, and bone-map target inventory. It does not patch or execute the binary.
 

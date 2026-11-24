@@ -3,26 +3,26 @@
 version = 4
 
 [[package]]
-name = "gta6-vr-core"
+name = "vi-vr-core"
 version = "0.1.0"
 
 [[package]]
-name = "gta6-vr-openxr"
+name = "vi-vr-openxr"
 version = "0.1.0"
 dependencies = [
- "gta6-vr-core",
+ "vi-vr-core",
 ]
 
 [[package]]
-name = "gta6-vr-pose"
+name = "vi-vr-pose"
 version = "0.1.0"
 dependencies = [
- "gta6-vr-core",
+ "vi-vr-core",
 ]
 
 [[package]]
-name = "gta6-vr-render-bridge"
+name = "vi-vr-render-bridge"
 version = "0.1.0"
 dependencies = [
- "gta6-vr-core",
+ "vi-vr-core",
 ]

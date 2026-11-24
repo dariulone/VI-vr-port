@@ -1,6 +1,6 @@
 #![forbid(unsafe_code)]
 
-use gta6_vr_core::{Eye, EyePacket};
+use vi_vr_core::{Eye, EyePacket};
 
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

@@ -1,11 +1,11 @@
 [package]
-name = "gta6-vr-render-bridge"
+name = "vi-vr-render-bridge"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 
 [dependencies]
-gta6-vr-core = { path = "../vr-core" }
+vi-vr-core = { path = "../vr-core" }
 
 [lints]
 workspace = true

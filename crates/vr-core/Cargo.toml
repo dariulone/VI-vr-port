@@ -1,5 +1,5 @@
 [package]
-name = "gta6-vr-core"
+name = "vi-vr-core"
 version.workspace = true
 edition.workspace = true
 license.workspace = true

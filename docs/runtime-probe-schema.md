@@ -2,7 +2,7 @@
 
 This schema defines one bounded JSON record for a single game frame. The record is intended for local x64dbg or bridge logging after a translated process exists. It contains identifiers, counters, RVAs, resource handles, and small fixed-size vectors. It does not contain raw game buffers or extracted resources.
 
-The safe Rust representation is `gta6-vr-core::RuntimeProbeFrame`. Its validator accepts a pre-present frame with payload `0` and a completed presentation frame with payload `69888`.
+The safe Rust representation is `vi-vr-core::RuntimeProbeFrame`. Its validator accepts a pre-present frame with payload `0` and a completed presentation frame with payload `69888`.
 
 ## Frame record
 
